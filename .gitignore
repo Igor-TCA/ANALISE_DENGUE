@@ -8,7 +8,7 @@
 *.csv
 *.xlsx
 *.xls
-!requirements.txt
+requirements.txt
 
 # Pasta de dados do IBGE
 CODIGO_DISTRITOS/
