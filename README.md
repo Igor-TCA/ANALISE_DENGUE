@@ -52,6 +52,8 @@ O foco é transformar dados de notificação em um panorama analítico com **tab
 ### Epidemiológicos (notificações)
 - [DATASUS](https://datasus.saude.gov.br/  ) - Microdados de notificações de dengue (CSV, ano 2025).  
   *(utilizado como base principal do projeto: `DENGBR25.csv`)*
+  
+  **Nota:** O arquivo `DENGBR25_SAMPLE.csv` é uma **amostra reduzida** da base completa (subset com menos registros), útil para testes rápidos, validação de código e exploração inicial sem necessidade de carregar o dataset completo.
 
 - [SINAN](http://sinan.saude.gov.br/) - Documentação, dicionário/legendas e codificação das variáveis (ex.: sintomas, evolução, idade).  
 
