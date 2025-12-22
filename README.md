@@ -1,4 +1,4 @@
-# 🦟 Dengue no Brasil (2025) — EDA com dados do DATASUS (SINAN Online)
+# 🦟 Dengue no Brasil (2025) - EDA com dados do DATASUS (SINAN Online)
 <center>
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/)
@@ -38,12 +38,12 @@ O foco é transformar dados de notificação em um panorama analítico com **tab
 
 ## Principais análises realizadas
 
-- **Visão geral do dataset:** volume, cobertura por UF e municípios
-- **Faixa etária:** distribuição de casos notificados por grupos etários
-- **Sintomas:** frequência por faixa etária (tratando campos ignorados quando aplicável)
-- **Recorte territorial:** região/UF e municípios com maior volume de notificações
-- **Desfechos:** leitura de gravidade via variável de evolução (quando disponível)
-- **Temporal:** evolução por **semana epidemiológica** (jan–nov/2025)
+- **Visão geral do dataset:** Volume, cobertura por UF e municípios
+- **Faixa etária:** Distribuição de casos notificados por grupos etários
+- **Sintomas:** Frequência por faixa etária (tratando campos ignorados quando aplicável)
+- **Recorte territorial:** Região/UF e municípios com maior volume de notificações
+- **Desfechos:** Leitura de gravidade via variável de evolução (quando disponível)
+- **Temporal:** Evolução por **semana epidemiológica** (jan–nov/2025)
 
 ---
 
@@ -67,7 +67,7 @@ O foco é transformar dados de notificação em um panorama analítico com **tab
 
 ## Limitações e próximos passos
 
-**Limitações:** base de notificação (pode haver subnotificação, campos ignorados e heterogeneidade de preenchimento por localidade).
+**Limitações:** Base de notificação (pode haver subnotificação, campos ignorados e heterogeneidade de preenchimento por localidade).
 
 **Próximos passos recomendados (nível DS):**
 
