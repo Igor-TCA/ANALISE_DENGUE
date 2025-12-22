@@ -145,7 +145,7 @@ def fmt_int(x: int) -> str:
 # UI
 # ----------------------------
 st.title("🦟 Dengue no Brasil (2025) — Dashboard EDA")
-st.caption("Base: DATASUS / SINAN Online (notificações). Métricas aqui refletem dados de notificação, não necessariamente casos confirmados.")
+st.caption("Base: DATASUS / SINAN. Métricas aqui refletem dados de notificação, não necessariamente casos confirmados!")
 
 with st.sidebar:
     st.header("Dados")
