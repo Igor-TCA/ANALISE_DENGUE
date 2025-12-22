@@ -9,12 +9,11 @@ SELECT COUNT(*) AS total_registros FROM notificacoes;
 SELECT * FROM notificacoes LIMIT 10;
 
 -- =============================================================================
--- ETAPA 2: TRATAMENTO DE DADOS - DECODIFICAÇÃO DA IDADE (PADRÃO SINAN)
+-- ETAPA 2: TRATAMENTO DE DADOS - DECODIFICAÇÃO DA IDADE
+-- Padrão SINAN: 4xxx=Anos, 3xxx=Meses, 2xxx=Dias, 1xxx=Horas
 -- =============================================================================
 
--- 2.1 Criar coluna de idade em anos decodificada
--- Padrão SINAN: 4xxx=Anos, 3xxx=Meses, 2xxx=Dias, 1xxx=Horas
-
+-- 2.1 Decodificar idade em anos
 WITH idade_decodificada AS (
     SELECT 
         *,
@@ -44,11 +43,11 @@ GROUP BY 1
 ORDER BY quantidade DESC;
 
 -- =============================================================================
--- ETAPA 3: CRIAR FAIXAS ETÁRIAS
+-- ETAPA 3: FAIXAS ETÁRIAS
+-- Crianças (0-15), Jovens (15-23), Adultos (23-60), Idosos (60+)
 -- =============================================================================
 
 -- 3.1 Classificar por faixa etária
--- Crianças (0-15), Jovens (15-23), Adultos (23-60), Idosos (60+)
 
 WITH dados_com_faixa AS (
     SELECT 
@@ -118,8 +117,7 @@ ORDER BY
 -- ETAPA 4: ANÁLISE DE SINTOMAS POR FAIXA ETÁRIA
 -- =============================================================================
 
--- 4.1 Frequência de cada sintoma (1=Sim) por faixa etária
--- Sintomas: FEBRE, MIALGIA, CEFALEIA, EXANTEMA, VOMITO, NAUSEA, DOR_COSTAS, etc
+-- 4.1 Frequência de cada sintoma por faixa etária
 
 WITH dados_completos AS (
     SELECT 
@@ -185,8 +183,7 @@ ORDER BY
         WHEN 'Idosos (60+)' THEN 4
     END;
 
--- 4.2 Top 5 sintomas mais comuns para cada faixa etária (usando UNPIVOT/UNION)
-
+-- 4.2 Top 5 sintomas - Crianças
 WITH dados_completos AS (
     SELECT 
         *,
@@ -241,11 +238,11 @@ ORDER BY percentual DESC
 LIMIT 5;
 
 -- =============================================================================
--- ETAPA 5: ANÁLISE DE CASOS POR REGIÃO E FAIXA ETÁRIA
+-- ETAPA 5: ANÁLISE POR REGIÃO E FAIXA ETÁRIA
+-- UF: Norte (11-17), Nordeste (21-29), Sudeste (31-35), Sul (41-43), Centro-Oeste (50-53)
 -- =============================================================================
 
 -- 5.1 Mapeamento de UF para Região
--- Códigos: Norte (11-17), Nordeste (21-29), Sudeste (31-35), Sul (41-43), Centro-Oeste (50-53)
 
 WITH dados_completos AS (
     SELECT 
@@ -468,10 +465,8 @@ ORDER BY
     END;
 
 -- =============================================================================
--- QUERIES AUXILIARES - MAPEAMENTO DE UF E NOMES
+-- AUXILIAR: MAPEAMENTO UF → NOME DO ESTADO
 -- =============================================================================
-
--- Mapeamento de código UF para nome do estado
 SELECT 
     SG_UF_NOT AS codigo_uf,
     CASE SG_UF_NOT

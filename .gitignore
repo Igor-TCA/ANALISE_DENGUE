@@ -5,13 +5,10 @@
 # -----------------------------------------------------------------------------
 # Dados sensíveis e grandes arquivos de dados
 # -----------------------------------------------------------------------------
-*.csv
+DENGBR25.csv
 *.xlsx
 *.xls
-!requirements.txt
-
-# Pasta de dados do IBGE
-CODIGO_DISTRITOS/
+requirements.txt
 
 # -----------------------------------------------------------------------------
 # Python
