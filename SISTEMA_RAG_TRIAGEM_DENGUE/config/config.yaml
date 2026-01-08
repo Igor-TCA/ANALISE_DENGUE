@@ -1,0 +1,105 @@
+# Configurações do Sistema de Triagem RAG
+
+# Configurações de Sintomas e Sinais de Alarme
+sintomas_dengue:
+  classicos:
+    - febre
+    - cefaleia
+    - mialgia
+    - artralgia
+    - dor_retro_orbital
+    - exantema
+    - nausea
+    - vomito
+    - dor_costas
+  
+  alarme:
+    - dor_abdominal_intensa
+    - vomitos_persistentes
+    - hipotensao_postura
+    - sangramentos_mucosas
+    - letargia
+    - hepatomegalia
+    - aumento_hematocrito
+    - queda_plaquetas
+
+  gravidade:
+    - choque
+    - insuficiencia_respiratoria
+    - sangramento_grave
+    - comprometimento_orgao
+    - alteracao_consciencia
+
+# Critérios de Classificação
+classificacao:
+  dengue_sem_sinais_alarme:
+    risco: "BAIXO"
+    cor: "verde"
+    descricao: "Dengue clássica sem complicações"
+    
+  dengue_com_sinais_alarme:
+    risco: "MÉDIO-ALTO"
+    cor: "amarelo"
+    descricao: "Necessita monitoramento intensivo"
+    
+  dengue_grave:
+    risco: "CRÍTICO"
+    cor: "vermelho"
+    descricao: "Risco de morte - atendimento imediato"
+
+# Perguntas de Triagem
+perguntas_triagem:
+  demograficas:
+    - idade
+    - sexo
+    - gestante
+    - comorbidades
+  
+  sintomas_inicio:
+    - data_inicio_sintomas
+    - febre_presente
+    - temperatura_maxima
+    - duracao_febre
+  
+  sintomas_principais:
+    - cefaleia
+    - dor_retro_orbital
+    - mialgia
+    - artralgia
+    - exantema
+    - nausea
+    - vomito
+    - dor_costas
+  
+  sinais_alarme:
+    - dor_abdominal_intensa
+    - vomitos_persistentes
+    - sangramento_espontaneo
+    - letargia_irritabilidade
+    - hepatomegalia_dolorosa
+    - queda_temperatura_sudorese
+    - oliguria
+  
+  comorbidades:
+    - diabetes
+    - hipertensao
+    - doenca_hematologica
+    - hepatopatia
+    - doenca_renal
+    - doenca_autoimune
+
+# Pesos para Score de Risco
+pesos_risco:
+  idade_extrema: 1.5  # <1 ano ou >65 anos
+  gestante: 2.0
+  comorbidade: 1.3
+  sinal_alarme: 3.0
+  sintoma_gravidade: 5.0
+  plaquetas_baixas: 2.0
+  hematocrito_elevado: 2.5
+
+# Thresholds de Classificação
+thresholds:
+  risco_baixo: 3.0
+  risco_medio: 6.0
+  risco_alto: 10.0
