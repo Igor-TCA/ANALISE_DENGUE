@@ -1,15 +1,20 @@
 # =============================================================================
-# GITIGNORE - Projeto An√°lise de Dengue
+# GITIGNORE - Projeto An·lise de Dengue
 # =============================================================================
 
 # -----------------------------------------------------------------------------
-# Dados sens√≠veis e grandes arquivos de dados
+# Dados sensÌveis e grandes arquivos de dados
 # -----------------------------------------------------------------------------
 DENGBR25.csv
 *.xlsx
 *.xls
-requirements.txt
 *.db
+!DENGBR25_SAMPLE.csv
+
+# -----------------------------------------------------------------------------
+# DocumentaÁ„o de auditoria (gerada automaticamente)
+# -----------------------------------------------------------------------------
+docs/
 
 # -----------------------------------------------------------------------------
 # Python
@@ -72,14 +77,43 @@ Thumbs.db
 desktop.ini
 
 # -----------------------------------------------------------------------------
-# Logs e arquivos tempor√°rios
+# Logs e arquivos tempor·rios
 # -----------------------------------------------------------------------------
+logs/
 *.log
 *.tmp
 *.temp
 *.bak
+temp/
+tmp/
 
 # -----------------------------------------------------------------------------
-# Gr√°ficos exportados (ser√£o regenerados ao executar o notebook)
+# Vari·veis de ambiente
+# -----------------------------------------------------------------------------
+.env
+.env.local
+
+# -----------------------------------------------------------------------------
+# Sistema RAG - Vector Store e dados processados
+# -----------------------------------------------------------------------------
+SISTEMA_RAG_TRIAGEM_DENGUE/vectorstore/
+SISTEMA_RAG_TRIAGEM_DENGUE/chroma_db/
+SISTEMA_RAG_TRIAGEM_DENGUE/data/knowledge_base.json
+SISTEMA_RAG_TRIAGEM_DENGUE/data/*.csv
+SISTEMA_RAG_TRIAGEM_DENGUE/logs/
+
+# Modelos locais (se baixar)
+models/
+*.bin
+*.pt
+*.pth
+
+# Outputs do sistema RAG
+outputs/
+triagem_*.json
+relatorios/
+
+# -----------------------------------------------------------------------------
+# Gr·ficos exportados (ser„o regenerados ao executar o notebook)
 # -----------------------------------------------------------------------------
 # GRAFICOS/
