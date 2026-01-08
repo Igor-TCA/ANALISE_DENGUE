@@ -1,4 +1,4 @@
-# 🦟 Dengue no Brasil (2025) - EDA com dados do DATASUS (SINAN Online)
+# 🦟 Dengue no Brasil (2025) - EDA com dados do DATASUS
 <center>
 
 [![Python](https://img.shields.io/badge/Python-3.10%2B-blue.svg?style=flat&logo=python&logoColor=white)](https://www.python.org/)
@@ -28,9 +28,15 @@ O foco é transformar dados de notificação em um panorama analítico com **tab
 
 ## Entregáveis
 
+### Análise Exploratória
 - Relatório com resultados, tabelas e conclusões: [`RELATORIO_ANALISE.md`](RELATORIO_ANALISE.md)
 - Notebook reprodutível (ETL + EDA): [`analise_dengue.ipynb`](analise_dengue.ipynb)
+- **Notebook de evolução temporal**: [`analise_evolucao_temporal_dengue.ipynb`](analise_evolucao_temporal_dengue.ipynb) — análise longitudinal com delta de tempos, estratificação demográfica e features para modelos preditivos
 - Gráficos exportados em `GRAFICOS/` (inclui dashboard e série temporal)
+
+### Sistema RAG de Triagem
+- **Sistema completo de triagem inteligente**: [`SISTEMA_RAG_TRIAGEM_DENGUE/`](SISTEMA_RAG_TRIAGEM_DENGUE/) — RAG com LangChain, ChromaDB e interface Streamlit
+- **Documentação técnica de auditoria**: [`docs/PROJECT_AUDIT.md`](docs/PROJECT_AUDIT.md) — arquitetura, diagnóstico e roadmap de melhorias
 
 ![Dashboard resumo](GRAFICOS/06_dashboard_final.png)
 
@@ -38,12 +44,25 @@ O foco é transformar dados de notificação em um panorama analítico com **tab
 
 ## Principais análises realizadas
 
+### Análise Exploratória (EDA)
 - **Visão geral do dataset:** Volume, cobertura por UF e municípios
 - **Faixa etária:** Distribuição de casos notificados por grupos etários
 - **Sintomas:** Frequência por faixa etária (tratando campos ignorados quando aplicável)
 - **Recorte territorial:** Região/UF e municípios com maior volume de notificações
 - **Desfechos:** Leitura de gravidade via variável de evolução (quando disponível)
 - **Temporal:** Evolução por **semana epidemiológica** (jan–nov/2025)
+
+### Análise de Evolução Temporal (NOVO)
+- **Delta de tempos:** Sintomas → Alarme → Gravidade → Óbito (quando aplicável)
+- **Estratificação:** Por faixa etária, sexo e região geográfica
+- **Progressão clínica:** Identificação de padrões de evolução rápida
+- **Features temporais:** Exportação para integração com RAG e modelos preditivos
+
+### Sistema RAG de Triagem (NOVO - v2.0)
+- **Perguntas adaptativas:** Minimização de perguntas via ganho de informação
+- **Segurança aprimorada:** Guardrails, abstention, citações com rastreabilidade
+- **Avaliação estruturada:** Golden set com 12 casos validados, métricas (Recall@K, MRR, nDCG)
+- **Classificação em 4 níveis:** BAIXO/MÉDIO/ALTO/CRÍTICO com recomendações de conduta
 
 ---
 
@@ -76,6 +95,37 @@ O foco é transformar dados de notificação em um panorama analítico com **tab
 - Normalização por população (IBGE) para taxas por 100 mil
 - Integração com clima (INMET) para baseline de previsão e avaliação (MAE/MAPE)
 - Análise de hotspots por taxa e métodos espaciais/estatísticos
+- Integração das features temporais do notebook de evolução com modelos de ML
+- Expansão do golden set do RAG com validação por especialistas
+
+---
+
+## Estrutura do Projeto
+
+```
+ANALISE_DENGUE/
+├── analise_dengue.ipynb                    # EDA principal
+├── analise_evolucao_temporal_dengue.ipynb  # Evolução temporal (NOVO)
+├── DENGBR25.csv                            # Dataset completo SINAN
+├── DENGBR25_SAMPLE.csv                     # Amostra para testes
+├── RELATORIO_ANALISE.md                    # Relatório de EDA
+├── requirements.txt                        # Dependências
+├── docs/
+│   └── PROJECT_AUDIT.md                    # Auditoria técnica (NOVO)
+├── GRAFICOS/                               # Visualizações exportadas
+├── CODIGO_DISTRITOS/                       # Dados territoriais
+└── SISTEMA_RAG_TRIAGEM_DENGUE/             # Sistema de triagem inteligente
+    ├── backend/
+    │   ├── rag_system.py                   # Core RAG (v2.0 com segurança)
+    │   ├── questionario.py                 # Questionário estruturado
+    │   ├── perguntas_adaptativas.py        # Sistema adaptativo (NOVO)
+    │   ├── avaliacao.py                    # Métricas e golden set (NOVO)
+    │   └── data_processor.py               # Processador de dados
+    ├── frontend/
+    │   └── app.py                          # Interface Streamlit
+    └── config/
+        └── config.yaml                     # Configurações
+```
 
 ---
 
