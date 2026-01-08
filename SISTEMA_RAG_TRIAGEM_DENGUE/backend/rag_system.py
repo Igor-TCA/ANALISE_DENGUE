@@ -1,12 +1,15 @@
 """
 Sistema RAG (Retrieval-Augmented Generation) para Triagem de Dengue
 Utiliza embeddings e LLM para análise de casos clínicos
+
+Versão 2.0 - Melhorias de segurança, abstention e citações
 """
 
 import os
 import json
 from pathlib import Path
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any, Optional, Tuple
+from datetime import datetime
 from dotenv import load_dotenv
 
 from langchain.text_splitter import RecursiveCharacterTextSplitter
@@ -183,13 +186,19 @@ class DengueRAGSystem:
     def create_qa_chain(self):
         """Cria chain de Question-Answering com contexto médico"""
         
-        # Template de prompt especializado para triagem médica
-        prompt_template = """Você é um sistema especialista em triagem de dengue, treinado com milhares de casos reais do SINAN/DATASUS.
+        # Template de prompt especializado para triagem médica com GUARDRAILS DE SEGURANÇA
+        prompt_template = """Você é um sistema de APOIO À DECISÃO em triagem de dengue, treinado com dados reais do SINAN/DATASUS.
 
-Sua função é analisar informações clínicas de pacientes e determinar o risco de evolução para formas graves de dengue, baseando-se em:
-- Padrões epidemiológicos identificados em casos reais
-- Fatores de risco conhecidos (idade, comorbidades, sinais de alarme)
-- Progressão temporal típica da doença
+AVISO DE SEGURANCA - LEIA ANTES DE PROSSEGUIR:
+Este sistema é APENAS auxiliar e NÃO substitui avaliação médica presencial.
+NUNCA forneça diagnóstico definitivo ou garanta prognóstico.
+Sempre recomende avaliação profissional para casos com qualquer sinal de alarme.
+
+Sua função é:
+1. Analisar informações clínicas e identificar padrões de risco
+2. Classificar o risco baseando-se em evidências epidemiológicas
+3. Recomendar condutas seguindo protocolos do Ministério da Saúde
+4. CITAR os casos similares que fundamentam sua análise
 
 Contexto de casos similares da base de dados:
 {context}
@@ -197,15 +206,35 @@ Contexto de casos similares da base de dados:
 Informações do paciente atual:
 {question}
 
-IMPORTANTE:
-- Seja preciso e baseie-se nos dados epidemiológicos fornecidos
-- Identifique sinais de alarme e fatores de risco
-- Classifique o risco como: BAIXO, MÉDIO, ALTO ou CRÍTICO
-- Forneça recomendações claras de conduta
-- Use linguagem técnica mas acessível para enfermeiros
-- Destaque urgência quando necessário
+REGRAS OBRIGATÓRIAS:
+1. Se houver QUALQUER sinal de gravidade (choque, sangramento grave, alteração consciência) → Classificar como CRÍTICO
+2. Se houver QUALQUER sinal de alarme → Classificar como ALTO ou superior
+3. Se paciente for idoso (>60), gestante ou tiver comorbidades → Aumentar um nível de risco
+4. Se as informações forem insuficientes → Indicar "CONFIANÇA BAIXA" e recomendar avaliação presencial
+5. SEMPRE incluir seção "Fundamentação" com referência aos casos similares encontrados
+6. NUNCA afirmar certeza diagnóstica - use termos como "sugere", "indica", "padrão consistente com"
 
-Análise e recomendação:"""
+FORMATO DA RESPOSTA:
+
+**CLASSIFICAÇÃO DE RISCO:** [BAIXO/MÉDIO/ALTO/CRÍTICO]
+**CONFIANÇA DA ANÁLISE:** [ALTA/MÉDIA/BAIXA]
+
+**ANÁLISE CLÍNICA:**
+[Análise dos sintomas e fatores de risco identificados]
+
+**FUNDAMENTAÇÃO (Casos Similares):**
+[Cite padrões encontrados nos casos da base que fundamentam a análise]
+
+**SINAIS DE ALERTA IDENTIFICADOS:**
+[Liste sinais de alarme ou gravidade presentes, ou "Nenhum identificado"]
+
+**CONDUTA RECOMENDADA:**
+[Recomendação clara de próximos passos]
+
+**OBSERVAÇÕES DE SEGURANÇA:**
+[Orientações específicas para monitoramento e quando buscar atendimento urgente]
+
+Análise:"""
 
         PROMPT = PromptTemplate(
             template=prompt_template,
@@ -238,8 +267,9 @@ Análise e recomendação:"""
             patient_data: Dicionário com dados do paciente
             
         Returns:
-            Dicionário com análise, classificação de risco e recomendações
+            Dicionário com análise, classificação de risco, recomendações e citações
         """
+        inicio = datetime.now()
         
         # Formatar dados do paciente como query
         query = self._format_patient_query(patient_data)
@@ -256,19 +286,111 @@ Análise e recomendação:"""
         # Classificar risco baseado na resposta
         risk_level = self._extract_risk_level(analysis)
         
+        # Calcular confiança melhorada
+        confidence_score, confidence_level = self._calculate_confidence(
+            source_docs, patient_data, analysis
+        )
+        
+        # Verificar se deve abster-se
+        should_abstain, abstain_reason = self._should_abstain(confidence_score, patient_data)
+        
+        # Formatar casos similares com citações
+        similar_cases = self._format_similar_cases(source_docs)
+        
+        # Tempo de processamento
+        tempo_ms = (datetime.now() - inicio).total_seconds() * 1000
+        
         # Montar resposta estruturada
         response = {
             'analysis': analysis,
             'risk_level': risk_level,
             'risk_color': self._get_risk_color(risk_level),
-            'similar_cases': self._format_similar_cases(source_docs),
-            'confidence': self._calculate_confidence(source_docs),
-            'patient_summary': self._create_patient_summary(patient_data)
+            'similar_cases': similar_cases,
+            'citations': self._format_citations(similar_cases),
+            'confidence': confidence_score,
+            'confidence_level': confidence_level,
+            'should_abstain': should_abstain,
+            'abstain_reason': abstain_reason,
+            'patient_summary': self._create_patient_summary(patient_data),
+            'processing_time_ms': round(tempo_ms, 1),
+            'disclaimer': self._get_safety_disclaimer(risk_level)
         }
         
-        logger.info(f"Análise concluída - Risco: {risk_level}")
+        # Log estruturado para análise posterior
+        self._log_analysis(patient_data, response)
+        
+        logger.info(f"Análise concluída - Risco: {risk_level} | Confiança: {confidence_level}")
         
         return response
+    
+    def _format_citations(self, similar_cases: List[Dict]) -> str:
+        """Formata citações dos casos recuperados"""
+        if not similar_cases:
+            return "Nenhuma referência encontrada na base de dados."
+        
+        citations = []
+        for i, caso in enumerate(similar_cases[:3], 1):
+            tipo = caso.get('tipo', 'caso')
+            faixa = caso.get('faixa_etaria', '')
+            preview = caso.get('content_preview', '')[:150]
+            
+            citation = f"[{caso['id']}] {tipo.upper()}"
+            if faixa:
+                citation += f" ({faixa})"
+            citation += f": {preview}..."
+            citations.append(citation)
+        
+        return "\n".join(citations)
+    
+    def _get_safety_disclaimer(self, risk_level: str) -> str:
+        """Retorna disclaimer de segurança apropriado ao nível de risco"""
+        base_disclaimer = (
+            "AVISO: Este e um sistema de APOIO A DECISAO. "
+            "NÃO substitui avaliação médica profissional. "
+        )
+        
+        if risk_level == 'CRÍTICO':
+            return base_disclaimer + (
+                "ATENCAO: Caso com sinais de gravidade identificados. "
+                "ENCAMINHAR IMEDIATAMENTE para atendimento de emergência. "
+                "Não aguardar - cada minuto conta."
+            )
+        elif risk_level == 'ALTO':
+            return base_disclaimer + (
+                "ALERTA: Paciente com sinais de alarme. "
+                "Avaliação médica urgente é NECESSÁRIA. "
+                "Se piora do quadro, buscar emergência imediatamente."
+            )
+        elif risk_level == 'MÉDIO':
+            return base_disclaimer + (
+                "Monitoramento recomendado. "
+                "Reavaliação em 24 horas. "
+                "Orientar sinais de alarme para busca de atendimento."
+            )
+        else:
+            return base_disclaimer + (
+                "Acompanhamento ambulatorial. "
+                "Retorno se piora ou não melhora em 48h. "
+                "Manter hidratação adequada."
+            )
+    
+    def _log_analysis(self, patient_data: Dict, response: Dict):
+        """Log estruturado para análise e melhoria do sistema"""
+        log_entry = {
+            'timestamp': datetime.now().isoformat(),
+            'patient_age': patient_data.get('idade'),
+            'patient_sex': patient_data.get('sexo'),
+            'days_symptoms': patient_data.get('dias_sintomas'),
+            'n_symptoms': len(patient_data.get('sintomas', [])),
+            'n_alarm_signs': len(patient_data.get('sinais_alarme', [])),
+            'n_severity_signs': len(patient_data.get('sinais_gravidade', [])),
+            'risk_level': response['risk_level'],
+            'confidence': response['confidence'],
+            'should_abstain': response['should_abstain'],
+            'processing_time_ms': response['processing_time_ms']
+        }
+        
+        logger.info(f"TRIAGEM_LOG: {json.dumps(log_entry)}")
     
     def _format_patient_query(self, patient_data: Dict) -> str:
         """Formata dados do paciente como query para o sistema"""
@@ -296,12 +418,12 @@ Análise e recomendação:"""
         # Sinais de alarme
         alarmes = patient_data.get('sinais_alarme', [])
         if alarmes:
-            query_parts.append(f"⚠️ SINAIS DE ALARME: {', '.join(alarmes)}")
+            query_parts.append(f"SINAIS DE ALARME: {', '.join(alarmes)}")
         
         # Sinais de gravidade
         gravidade = patient_data.get('sinais_gravidade', [])
         if gravidade:
-            query_parts.append(f"🚨 SINAIS DE GRAVIDADE: {', '.join(gravidade)}")
+            query_parts.append(f"SINAIS DE GRAVIDADE: {', '.join(gravidade)}")
         
         # Comorbidades
         comorbidades = patient_data.get('comorbidades', [])
@@ -341,28 +463,109 @@ Análise e recomendação:"""
         return colors.get(risk_level, 'cinza')
     
     def _format_similar_cases(self, source_docs: List[Document]) -> List[Dict]:
-        """Formata casos similares encontrados"""
+        """Formata casos similares encontrados com citações completas"""
         similar = []
         
-        for doc in source_docs[:3]:  # Top 3 casos mais similares
-            similar.append({
-                'content': doc.page_content[:200] + "...",
-                'metadata': doc.metadata
-            })
+        for i, doc in enumerate(source_docs[:5]):  # Top 5 casos mais similares
+            caso = {
+                'id': f"REF-{i+1}",
+                'content': doc.page_content,  # Conteúdo completo para citação
+                'content_preview': doc.page_content[:300] + "..." if len(doc.page_content) > 300 else doc.page_content,
+                'metadata': doc.metadata,
+                'tipo': doc.metadata.get('tipo', 'desconhecido'),
+                'faixa_etaria': doc.metadata.get('faixa_etaria', ''),
+                'desfecho': doc.metadata.get('desfecho', '')
+            }
+            similar.append(caso)
         
         return similar
     
-    def _calculate_confidence(self, source_docs: List[Document]) -> float:
-        """Calcula confiança baseada em documentos recuperados"""
-        # Simplificado: baseado no número de documentos relevantes encontrados
+    def _calculate_confidence(
+        self, 
+        source_docs: List[Document],
+        patient_data: Dict[str, Any],
+        analysis: str
+    ) -> Tuple[float, str]:
+        """
+        Calcula confiança baseada em múltiplos fatores
+        
+        Returns:
+            (score_confianca, nivel_confianca)
+        """
+        score = 0.0
+        
+        # Fator 1: Número de documentos relevantes encontrados (0-0.3)
         if len(source_docs) >= 5:
-            return 0.9
+            score += 0.30
         elif len(source_docs) >= 3:
-            return 0.75
+            score += 0.20
         elif len(source_docs) >= 1:
-            return 0.6
+            score += 0.10
+        
+        # Fator 2: Completude dos dados do paciente (0-0.3)
+        campos_essenciais = ['idade', 'sexo', 'dias_sintomas', 'sintomas']
+        campos_preenchidos = sum(1 for c in campos_essenciais if patient_data.get(c))
+        score += (campos_preenchidos / len(campos_essenciais)) * 0.30
+        
+        # Fator 3: Consistência da análise (0-0.2)
+        # Verificar se a análise contém elementos estruturados
+        elementos_esperados = [
+            'CLASSIFICAÇÃO', 'CONDUTA', 'RISCO', 'ANÁLISE'
+        ]
+        elementos_encontrados = sum(1 for e in elementos_esperados if e in analysis.upper())
+        score += (elementos_encontrados / len(elementos_esperados)) * 0.20
+        
+        # Fator 4: Presença de sinais claros (0-0.2)
+        # Sinais de alarme/gravidade aumentam confiança na classificação
+        tem_alarmes = len(patient_data.get('sinais_alarme', [])) > 0
+        tem_gravidade = len(patient_data.get('sinais_gravidade', [])) > 0
+        if tem_alarmes or tem_gravidade:
+            score += 0.20  # Quadro mais definido = maior confiança
         else:
-            return 0.4
+            score += 0.10  # Quadro inicial pode ser menos claro
+        
+        # Converter score em nível
+        if score >= 0.80:
+            nivel = "ALTA"
+        elif score >= 0.60:
+            nivel = "MÉDIA"
+        else:
+            nivel = "BAIXA"
+        
+        return round(score, 2), nivel
+    
+    def _should_abstain(
+        self, 
+        confidence: float,
+        patient_data: Dict[str, Any]
+    ) -> Tuple[bool, str]:
+        """
+        Verifica se o sistema deve se abster de dar resposta definitiva
+        
+        Returns:
+            (deve_abstenir, motivo)
+        """
+        ABSTENTION_THRESHOLD = 0.50
+        
+        # Caso 1: Confiança muito baixa
+        if confidence < ABSTENTION_THRESHOLD:
+            return True, "Informações insuficientes para avaliação confiável"
+        
+        # Caso 2: Dados essenciais faltando
+        if not patient_data.get('idade'):
+            return True, "Idade do paciente não informada - essencial para avaliação"
+        
+        if not patient_data.get('dias_sintomas') and patient_data.get('dias_sintomas') != 0:
+            return True, "Tempo de evolução não informado"
+        
+        # Caso 3: Quadro atípico
+        tem_febre = 'febre' in [s.lower() for s in patient_data.get('sintomas', [])]
+        tem_alarmes = len(patient_data.get('sinais_alarme', [])) > 0
+        
+        if not tem_febre and tem_alarmes:
+            return True, "Quadro atípico (sinais de alarme sem febre) - avaliação médica necessária"
+        
+        return False, ""
     
     def _create_patient_summary(self, patient_data: Dict) -> str:
         """Cria resumo do paciente"""
