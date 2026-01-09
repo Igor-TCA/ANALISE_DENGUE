@@ -71,10 +71,41 @@ SISTEMA_RAG_TRIAGEM_DENGUE/
 O sistema é treinado com dados reais do SINAN (Sistema de Informação de Agravos de Notificação):
 
 - **Fonte**: DATASUS / Ministério da Saúde
-- **Período**: 2025
-- **Total de registros**: 1.502.259 notificações de dengue
-- **Casos graves analisados**: Hospitalizações, óbitos e dengue grave
-- **Documentos no vector store**: Milhares de padrões clínicos extraídos
+- **Período**: 2022 a 2025 (4 anos de dados)
+- **Total de registros**: ~11 milhões de notificações de dengue
+- **Óbitos analisados**: ~10.000+ casos
+- **Hospitalizações**: ~360.000+ casos
+- **Documentos RAG**: 56 entradas de conhecimento estruturadas
+
+### Arquivos de Dados Suportados
+
+O sistema busca automaticamente arquivos CSV com o padrão `DENGBR*.csv` nas seguintes pastas:
+- `../BASE DE DADOS/`
+- Pasta raiz do projeto
+
+Arquivos processados:
+| Arquivo | Ano | Registros |
+|---------|-----|-----------|
+| DENGBR22.csv | 2022 | ~1.4M |
+| DENGBR23.csv | 2023 | ~1.5M |
+| DENGBR24.csv | 2024 | ~6.4M |
+| DENGBR25.csv | 2025 | ~1.7M |
+| **Total** | - | **~11M** |
+
+### Categorias de Conhecimento
+
+| Categoria | Entradas | Descrição |
+|-----------|----------|-----------|
+| Classificação de risco | 5 | Risco por faixa etária (lactente, criança, jovem, adulto, idoso) |
+| Sinais de alarme | 9 | Hipotensão, vômitos, sangramento, dor abdominal, etc. |
+| Sinais de gravidade | 12 | Pulso fraco, choque, convulsões, hemorragia, etc. |
+| Sintomas | 11 | Febre, cefaleia, mialgia, exantema, etc. |
+| Comorbidades | 7 | Diabetes, hipertensão, hepatopatia, etc. |
+| Condutas | 4 | Protocolos para Grupos A, B, C e D |
+| Hidratação | 3 | Oral e venosa conforme gravidade |
+| Medicamentos | 2 | Permitidos e contraindicados |
+| Exames | 2 | Quando solicitar e o que pedir |
+| Período crítico | 1 | 3º ao 7º dia de doença |
 
 ## Instalação
 
@@ -187,30 +218,110 @@ A aplicação abrirá automaticamente no navegador em `http://localhost:8501`
 - **Conduta**: ATENDIMENTO IMEDIATO
 - **Ação**: Encaminhar para emergência
 
-## Como funciona o RAG
+## Como funciona o Sistema RAG
 
-1. **Indexação** (setup):
-   - Dados do SINAN são processados
-   - Casos graves são extraídos e analisados
-   - Padrões clínicos são identificados
-   - Documentos são convertidos em embeddings
-   - Vector store é criado para busca semântica
+O sistema utiliza **RAG Local** - uma implementação que não depende de APIs externas (como OpenAI ou Anthropic), processando todos os dados localmente.
 
-2. **Triagem** (runtime):
-   - Enfermeiro preenche questionário
-   - Sistema calcula score de risco inicial
-   - Dados do paciente são formatados como query
+### Arquitetura do Sistema RAG
 
-3. **Recuperação** (Retrieval):
-   - Query é convertida em embedding
-   - Busca por similaridade no vector store
-   - Top 5 casos mais similares são recuperados
+```
+┌─────────────────────────────────────────────────────────────────────┐
+│                    SISTEMA RAG LOCAL DE TRIAGEM                      │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                      │
+│  ┌──────────────┐    ┌───────────────┐    ┌──────────────────────┐  │
+│  │ DENGBR22.csv │    │ DENGBR23.csv  │    │ DENGBR24.csv         │  │
+│  │ DENGBR25.csv │    │     ...       │    │ (múltiplos arquivos) │  │
+│  └──────┬───────┘    └───────┬───────┘    └──────────┬───────────┘  │
+│         │                    │                       │              │
+│         └────────────────────┼───────────────────────┘              │
+│                              ▼                                       │
+│              ┌───────────────────────────────┐                      │
+│              │   gerar_base_conhecimento.py   │                      │
+│              │   (Processamento de ~11M casos)│                      │
+│              └───────────────┬───────────────┘                      │
+│                              ▼                                       │
+│              ┌───────────────────────────────┐                      │
+│              │   BASE DE CONHECIMENTO RAG     │                      │
+│              │   • base_conhecimento_dengue.csv                     │
+│              │   • knowledge_base_completo.json                     │
+│              │   • 56 entradas estruturadas   │                      │
+│              └───────────────┬───────────────┘                      │
+│                              ▼                                       │
+│  ┌───────────────────────────────────────────────────────────────┐  │
+│  │                    LocalRAGSystem                              │  │
+│  │  ┌─────────────┐  ┌─────────────┐  ┌─────────────────────┐    │  │
+│  │  │ Busca por   │  │ Cálculo de  │  │ Enriquecimento      │    │  │
+│  │  │ Similaridade│→ │ Confiança   │→ │ com Dados Reais     │    │  │
+│  │  └─────────────┘  └─────────────┘  └─────────────────────┘    │  │
+│  └───────────────────────────────────────────────────────────────┘  │
+│                              ▼                                       │
+│              ┌───────────────────────────────┐                      │
+│              │     Análise do Paciente        │                      │
+│              │  • Classificação (Grupos A-D)  │                      │
+│              │  • Taxas reais de óbito/hosp   │                      │
+│              │  • Conduta recomendada         │                      │
+│              │  • Referências da base         │                      │
+│              └───────────────────────────────┘                      │
+│                                                                      │
+└─────────────────────────────────────────────────────────────────────┘
+```
 
-4. **Geração** (Augmented Generation):
-   - Contexto dos casos similares + dados do paciente
-   - LLM analisa e gera avaliação detalhada
-   - Classificação final de risco
-   - Recomendações de conduta
+### 1. Geração da Base de Conhecimento
+
+O script `gerar_base_conhecimento.py` processa automaticamente todos os arquivos CSV:
+
+```bash
+cd SISTEMA_RAG_TRIAGEM_DENGUE
+python gerar_base_conhecimento.py
+```
+
+**O que ele faz:**
+1. Busca automaticamente arquivos `DENGBR*.csv` na pasta `BASE DE DADOS`
+2. Carrega e concatena todos os arquivos (2022-2025)
+3. Calcula estatísticas reais: taxas de óbito, hospitalização por faixa etária
+4. Extrai padrões de sinais de alarme e gravidade
+5. Analisa impacto de comorbidades nos desfechos
+6. Gera 56 entradas de conhecimento estruturadas
+7. Salva em formato CSV e JSON para consulta rápida
+
+### 2. Sistema de Busca (Retrieval)
+
+O `LocalRAGSystem` implementa busca por similaridade sem dependências externas:
+
+- **Algoritmo**: TF-IDF simplificado com pesos para termos médicos
+- **Categorias**: Busca direcionada por tipo de informação
+- **Performance**: Resposta em milissegundos para consultas
+
+### 3. Geração de Análise (Augmented Generation)
+
+O `LocalDengueAnalyzer` combina:
+- Regras clínicas do Protocolo do Ministério da Saúde
+- Dados epidemiológicos reais de ~11 milhões de casos
+- Busca contextual na base de conhecimento
+- Cálculo de confiança baseado em referências encontradas
+
+### Exemplo de Análise Gerada
+
+```markdown
+## 📋 ANÁLISE CLÍNICA COM INTELIGÊNCIA ARTIFICIAL
+
+### 🔬 Base de Dados
+- **Total de casos analisados:** 10,998,370
+- **Fonte:** SINAN/DATASUS 2022-2025
+- **Referências encontradas:** 3
+
+### 📈 Dados Epidemiológicos Reais
+| Indicador | Valor |
+|-----------|-------|
+| Taxa de hospitalização na faixa | **4.37%** |
+| Taxa de óbito na faixa | **0.0891%** |
+
+### 📚 Sinais de Alarme (Base RAG)
+**hipotensão postural:** Presente em 36.4% dos casos graves. 
+Pacientes com este sinal têm taxa de óbito de 10.206%. 
+Este é um sinal de alarme que requer ATENÇÃO IMEDIATA.
+```
 
 ## Documentação Técnica
 

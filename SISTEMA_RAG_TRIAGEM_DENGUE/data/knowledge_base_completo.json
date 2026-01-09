@@ -1,0 +1,498 @@
+{
+  "metadata": {
+    "data_geracao": "2026-01-08T22:23:45.556626",
+    "total_casos_analisados": 10998370,
+    "total_obitos": 10211,
+    "total_graves": 10211,
+    "total_entradas_conhecimento": 56,
+    "arquivos_processados": 4,
+    "anos_cobertos": [
+      "22",
+      "23",
+      "24",
+      "25"
+    ],
+    "fonte": "SINAN/DATASUS - 4 arquivos (22, 23, 24, 25)"
+  },
+  "entradas": [
+    {
+      "categoria": "classificacao_risco",
+      "subcategoria": "faixa_etaria",
+      "pergunta": "Qual o risco para pacientes da faixa Adulto (23-59)?",
+      "resposta": "Faixa Adulto (23-59): Risco MÉDIO. Taxa de hospitalização: 2.56%. Taxa de óbito: 0.051%. Taxa de casos graves: 0.00%. Total de casos analisados: 6,196,354.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"faixa_etaria\": \"Adulto (23-59)\", \"n_casos\": 6196354, \"taxa_hospitalizacao\": 2.56, \"taxa_obito\": 0.051, \"taxa_casos_graves\": 0.0, \"nivel_risco\": \"M\\u00c9DIO\"}"
+    },
+    {
+      "categoria": "classificacao_risco",
+      "subcategoria": "faixa_etaria",
+      "pergunta": "Qual o risco para pacientes da faixa Idoso (60+)?",
+      "resposta": "Faixa Idoso (60+): Risco ALTO. Taxa de hospitalização: 6.30%. Taxa de óbito: 0.408%. Taxa de casos graves: 0.00%. Total de casos analisados: 1,555,379.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"faixa_etaria\": \"Idoso (60+)\", \"n_casos\": 1555379, \"taxa_hospitalizacao\": 6.3, \"taxa_obito\": 0.408, \"taxa_casos_graves\": 0.0, \"nivel_risco\": \"ALTO\"}"
+    },
+    {
+      "categoria": "classificacao_risco",
+      "subcategoria": "faixa_etaria",
+      "pergunta": "Qual o risco para pacientes da faixa Lactente (0-2)?",
+      "resposta": "Faixa Lactente (0-2): Risco MÉDIO. Taxa de hospitalização: 6.69%. Taxa de óbito: 0.082%. Taxa de casos graves: 0.00%. Total de casos analisados: 154,038.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"faixa_etaria\": \"Lactente (0-2)\", \"n_casos\": 154038, \"taxa_hospitalizacao\": 6.69, \"taxa_obito\": 0.082, \"taxa_casos_graves\": 0.0, \"nivel_risco\": \"M\\u00c9DIO\"}"
+    },
+    {
+      "categoria": "classificacao_risco",
+      "subcategoria": "faixa_etaria",
+      "pergunta": "Qual o risco para pacientes da faixa Jovem (15-22)?",
+      "resposta": "Faixa Jovem (15-22): Risco BAIXO. Taxa de hospitalização: 2.23%. Taxa de óbito: 0.021%. Taxa de casos graves: 0.00%. Total de casos analisados: 1,516,112.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"faixa_etaria\": \"Jovem (15-22)\", \"n_casos\": 1516112, \"taxa_hospitalizacao\": 2.23, \"taxa_obito\": 0.021, \"taxa_casos_graves\": 0.0, \"nivel_risco\": \"BAIXO\"}"
+    },
+    {
+      "categoria": "classificacao_risco",
+      "subcategoria": "faixa_etaria",
+      "pergunta": "Qual o risco para pacientes da faixa Criança (2-14)?",
+      "resposta": "Faixa Criança (2-14): Risco BAIXO. Taxa de hospitalização: 3.70%. Taxa de óbito: 0.018%. Taxa de casos graves: 0.00%. Total de casos analisados: 1,575,844.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"faixa_etaria\": \"Crian\\u00e7a (2-14)\", \"n_casos\": 1575844, \"taxa_hospitalizacao\": 3.7, \"taxa_obito\": 0.018, \"taxa_casos_graves\": 0.0, \"nivel_risco\": \"BAIXO\"}"
+    },
+    {
+      "categoria": "sinais_alarme",
+      "subcategoria": "hipotensão postural",
+      "pergunta": "O que significa hipotensão postural como sinal de alarme?",
+      "resposta": "HIPOTENSÃO POSTURAL: Queda da pressão ao levantar. Presente em 37.3% dos casos graves. Pacientes com este sinal têm taxa de óbito de 11.290%. Este é um sinal de alarme que requer ATENÇÃO IMEDIATA e reavaliação médica urgente.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"hipotens\\u00e3o postural\", \"frequencia_casos_graves\": 37.3, \"frequencia_geral\": 0.3, \"taxa_obito_associada\": 11.29}"
+    },
+    {
+      "categoria": "sinais_alarme",
+      "subcategoria": "queda de plaquetas",
+      "pergunta": "O que significa queda de plaquetas como sinal de alarme?",
+      "resposta": "QUEDA DE PLAQUETAS: Trombocitopenia. Presente em 45.6% dos casos graves. Pacientes com este sinal têm taxa de óbito de 4.445%. Este é um sinal de alarme que requer ATENÇÃO IMEDIATA e reavaliação médica urgente.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"queda de plaquetas\", \"frequencia_casos_graves\": 45.6, \"frequencia_geral\": 1.0, \"taxa_obito_associada\": 4.445}"
+    },
+    {
+      "categoria": "sinais_alarme",
+      "subcategoria": "vômitos persistentes",
+      "pergunta": "O que significa vômitos persistentes como sinal de alarme?",
+      "resposta": "VÔMITOS PERSISTENTES: Vômitos que não cessam. Presente em 19.3% dos casos graves. Pacientes com este sinal têm taxa de óbito de 6.011%. Este é um sinal de alarme que requer ATENÇÃO IMEDIATA e reavaliação médica urgente.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"v\\u00f4mitos persistentes\", \"frequencia_casos_graves\": 19.3, \"frequencia_geral\": 0.3, \"taxa_obito_associada\": 6.011}"
+    },
+    {
+      "categoria": "sinais_alarme",
+      "subcategoria": "sangramento de mucosas",
+      "pergunta": "O que significa sangramento de mucosas como sinal de alarme?",
+      "resposta": "SANGRAMENTO DE MUCOSAS: Sangramento gengival, nasal ou outros. Presente em 20.8% dos casos graves. Pacientes com este sinal têm taxa de óbito de 4.500%. Este é um sinal de alarme que requer ATENÇÃO IMEDIATA e reavaliação médica urgente.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"sangramento de mucosas\", \"frequencia_casos_graves\": 20.8, \"frequencia_geral\": 0.4, \"taxa_obito_associada\": 4.5}"
+    },
+    {
+      "categoria": "sinais_alarme",
+      "subcategoria": "aumento do hematócrito",
+      "pergunta": "O que significa aumento do hematócrito como sinal de alarme?",
+      "resposta": "AUMENTO DO HEMATÓCRITO: Hemoconcentração. Presente em 9.4% dos casos graves. Pacientes com este sinal têm taxa de óbito de 8.119%. Este é um sinal de alarme que requer ATENÇÃO IMEDIATA e reavaliação médica urgente.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"aumento do hemat\\u00f3crito\", \"frequencia_casos_graves\": 9.4, \"frequencia_geral\": 0.1, \"taxa_obito_associada\": 8.119}"
+    },
+    {
+      "categoria": "sinais_alarme",
+      "subcategoria": "dor abdominal intensa",
+      "pergunta": "O que significa dor abdominal intensa como sinal de alarme?",
+      "resposta": "DOR ABDOMINAL INTENSA: Dor abdominal contínua. Presente em 30.3% dos casos graves. Pacientes com este sinal têm taxa de óbito de 3.924%. Este é um sinal de alarme que requer ATENÇÃO IMEDIATA e reavaliação médica urgente.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"dor abdominal intensa\", \"frequencia_casos_graves\": 30.3, \"frequencia_geral\": 0.7, \"taxa_obito_associada\": 3.924}"
+    },
+    {
+      "categoria": "sinais_alarme",
+      "subcategoria": "letargia",
+      "pergunta": "O que significa letargia como sinal de alarme?",
+      "resposta": "LETARGIA: Sonolência excessiva ou irritabilidade. Presente em 24.5% dos casos graves. Pacientes com este sinal têm taxa de óbito de 11.666%. Este é um sinal de alarme que requer ATENÇÃO IMEDIATA e reavaliação médica urgente.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"letargia\", \"frequencia_casos_graves\": 24.5, \"frequencia_geral\": 0.2, \"taxa_obito_associada\": 11.666}"
+    },
+    {
+      "categoria": "sinais_alarme",
+      "subcategoria": "hepatomegalia dolorosa",
+      "pergunta": "O que significa hepatomegalia dolorosa como sinal de alarme?",
+      "resposta": "HEPATOMEGALIA DOLOROSA: Fígado aumentado e doloroso. Presente em 3.0% dos casos graves. Pacientes com este sinal têm taxa de óbito de 10.567%. Este é um sinal de alarme que requer ATENÇÃO IMEDIATA e reavaliação médica urgente.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"hepatomegalia dolorosa\", \"frequencia_casos_graves\": 3.0, \"frequencia_geral\": 0.0, \"taxa_obito_associada\": 10.567}"
+    },
+    {
+      "categoria": "sinais_alarme",
+      "subcategoria": "acúmulo de líquidos",
+      "pergunta": "O que significa acúmulo de líquidos como sinal de alarme?",
+      "resposta": "ACÚMULO DE LÍQUIDOS: Derrame pleural ou ascite. Presente em 10.5% dos casos graves. Pacientes com este sinal têm taxa de óbito de 16.974%. Este é um sinal de alarme que requer ATENÇÃO IMEDIATA e reavaliação médica urgente.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"ac\\u00famulo de l\\u00edquidos\", \"frequencia_casos_graves\": 10.5, \"frequencia_geral\": 0.1, \"taxa_obito_associada\": 16.974}"
+    },
+    {
+      "categoria": "sinais_gravidade",
+      "subcategoria": "pulso fraco ou ausente",
+      "pergunta": "O que significa pulso fraco ou ausente como sinal de gravidade?",
+      "resposta": "PULSO FRACO OU AUSENTE: Indica choque. Presente em 24.4% dos casos que evoluíram para óbito. Este é um SINAL DE GRAVIDADE que indica DENGUE GRAVE (Grupo D) e requer INTERNAÇÃO IMEDIATA em UTI ou unidade de emergência.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"pulso fraco ou ausente\", \"frequencia_obitos\": 24.4, \"classificacao\": \"GRUPO D - DENGUE GRAVE\"}"
+    },
+    {
+      "categoria": "sinais_gravidade",
+      "subcategoria": "convulsões",
+      "pergunta": "O que significa convulsões como sinal de gravidade?",
+      "resposta": "CONVULSÕES: Comprometimento neurológico. Presente em 11.3% dos casos que evoluíram para óbito. Este é um SINAL DE GRAVIDADE que indica DENGUE GRAVE (Grupo D) e requer INTERNAÇÃO IMEDIATA em UTI ou unidade de emergência.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"convuls\\u00f5es\", \"frequencia_obitos\": 11.3, \"classificacao\": \"GRUPO D - DENGUE GRAVE\"}"
+    },
+    {
+      "categoria": "sinais_gravidade",
+      "subcategoria": "enchimento capilar lento",
+      "pergunta": "O que significa enchimento capilar lento como sinal de gravidade?",
+      "resposta": "ENCHIMENTO CAPILAR LENTO: Maior que 2 segundos. Presente em 17.7% dos casos que evoluíram para óbito. Este é um SINAL DE GRAVIDADE que indica DENGUE GRAVE (Grupo D) e requer INTERNAÇÃO IMEDIATA em UTI ou unidade de emergência.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"enchimento capilar lento\", \"frequencia_obitos\": 17.7, \"classificacao\": \"GRUPO D - DENGUE GRAVE\"}"
+    },
+    {
+      "categoria": "sinais_gravidade",
+      "subcategoria": "insuficiência respiratória",
+      "pergunta": "O que significa insuficiência respiratória como sinal de gravidade?",
+      "resposta": "INSUFICIÊNCIA RESPIRATÓRIA: Desconforto respiratório grave. Presente em 19.3% dos casos que evoluíram para óbito. Este é um SINAL DE GRAVIDADE que indica DENGUE GRAVE (Grupo D) e requer INTERNAÇÃO IMEDIATA em UTI ou unidade de emergência.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"insufici\\u00eancia respirat\\u00f3ria\", \"frequencia_obitos\": 19.3, \"classificacao\": \"GRUPO D - DENGUE GRAVE\"}"
+    },
+    {
+      "categoria": "sinais_gravidade",
+      "subcategoria": "taquicardia",
+      "pergunta": "O que significa taquicardia como sinal de gravidade?",
+      "resposta": "TAQUICARDIA: Frequência cardíaca elevada. Presente em 28.7% dos casos que evoluíram para óbito. Este é um SINAL DE GRAVIDADE que indica DENGUE GRAVE (Grupo D) e requer INTERNAÇÃO IMEDIATA em UTI ou unidade de emergência.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"taquicardia\", \"frequencia_obitos\": 28.7, \"classificacao\": \"GRUPO D - DENGUE GRAVE\"}"
+    },
+    {
+      "categoria": "sinais_gravidade",
+      "subcategoria": "extremidades frias",
+      "pergunta": "O que significa extremidades frias como sinal de gravidade?",
+      "resposta": "EXTREMIDADES FRIAS: Hipoperfusão periférica. Presente em 33.5% dos casos que evoluíram para óbito. Este é um SINAL DE GRAVIDADE que indica DENGUE GRAVE (Grupo D) e requer INTERNAÇÃO IMEDIATA em UTI ou unidade de emergência.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"extremidades frias\", \"frequencia_obitos\": 33.5, \"classificacao\": \"GRUPO D - DENGUE GRAVE\"}"
+    },
+    {
+      "categoria": "sinais_gravidade",
+      "subcategoria": "hipotensão arterial",
+      "pergunta": "O que significa hipotensão arterial como sinal de gravidade?",
+      "resposta": "HIPOTENSÃO ARTERIAL: Pressão arterial baixa. Presente em 25.0% dos casos que evoluíram para óbito. Este é um SINAL DE GRAVIDADE que indica DENGUE GRAVE (Grupo D) e requer INTERNAÇÃO IMEDIATA em UTI ou unidade de emergência.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"hipotens\\u00e3o arterial\", \"frequencia_obitos\": 25.0, \"classificacao\": \"GRUPO D - DENGUE GRAVE\"}"
+    },
+    {
+      "categoria": "sinais_gravidade",
+      "subcategoria": "hematócrito elevado",
+      "pergunta": "O que significa hematócrito elevado como sinal de gravidade?",
+      "resposta": "HEMATÓCRITO ELEVADO: Hemoconcentração grave. Presente em 7.5% dos casos que evoluíram para óbito. Este é um SINAL DE GRAVIDADE que indica DENGUE GRAVE (Grupo D) e requer INTERNAÇÃO IMEDIATA em UTI ou unidade de emergência.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"hemat\\u00f3crito elevado\", \"frequencia_obitos\": 7.5, \"classificacao\": \"GRUPO D - DENGUE GRAVE\"}"
+    },
+    {
+      "categoria": "sinais_gravidade",
+      "subcategoria": "melena",
+      "pergunta": "O que significa melena como sinal de gravidade?",
+      "resposta": "MELENA: Sangue nas fezes. Presente em 7.1% dos casos que evoluíram para óbito. Este é um SINAL DE GRAVIDADE que indica DENGUE GRAVE (Grupo D) e requer INTERNAÇÃO IMEDIATA em UTI ou unidade de emergência.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"melena\", \"frequencia_obitos\": 7.1, \"classificacao\": \"GRUPO D - DENGUE GRAVE\"}"
+    },
+    {
+      "categoria": "sinais_gravidade",
+      "subcategoria": "sangramento grave",
+      "pergunta": "O que significa sangramento grave como sinal de gravidade?",
+      "resposta": "SANGRAMENTO GRAVE: Hemorragia importante. Presente em 2.3% dos casos que evoluíram para óbito. Este é um SINAL DE GRAVIDADE que indica DENGUE GRAVE (Grupo D) e requer INTERNAÇÃO IMEDIATA em UTI ou unidade de emergência.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"sangramento grave\", \"frequencia_obitos\": 2.3, \"classificacao\": \"GRUPO D - DENGUE GRAVE\"}"
+    },
+    {
+      "categoria": "sinais_gravidade",
+      "subcategoria": "alteração de consciência",
+      "pergunta": "O que significa alteração de consciência como sinal de gravidade?",
+      "resposta": "ALTERAÇÃO DE CONSCIÊNCIA: Confusão, torpor ou coma. Presente em 33.8% dos casos que evoluíram para óbito. Este é um SINAL DE GRAVIDADE que indica DENGUE GRAVE (Grupo D) e requer INTERNAÇÃO IMEDIATA em UTI ou unidade de emergência.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"altera\\u00e7\\u00e3o de consci\\u00eancia\", \"frequencia_obitos\": 33.8, \"classificacao\": \"GRUPO D - DENGUE GRAVE\"}"
+    },
+    {
+      "categoria": "sinais_gravidade",
+      "subcategoria": "comprometimento de órgãos",
+      "pergunta": "O que significa comprometimento de órgãos como sinal de gravidade?",
+      "resposta": "COMPROMETIMENTO DE ÓRGÃOS: Falência orgânica. Presente em 15.7% dos casos que evoluíram para óbito. Este é um SINAL DE GRAVIDADE que indica DENGUE GRAVE (Grupo D) e requer INTERNAÇÃO IMEDIATA em UTI ou unidade de emergência.",
+      "fonte": "SINAN/DATASUS 2025 + Protocolo MS",
+      "dados": "{\"sinal\": \"comprometimento de \\u00f3rg\\u00e3os\", \"frequencia_obitos\": 15.7, \"classificacao\": \"GRUPO D - DENGUE GRAVE\"}"
+    },
+    {
+      "categoria": "sintomas",
+      "subcategoria": "febre",
+      "pergunta": "Qual a relevância de febre na dengue?",
+      "resposta": "FEBRE: Presente em 82.8% de todos os casos e em 74.6% dos casos graves. A presença isolada deste sintoma não indica gravidade, mas deve ser monitorada junto com outros sinais.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"sintoma\": \"febre\", \"frequencia_geral\": 82.8, \"frequencia_graves\": 74.6}"
+    },
+    {
+      "categoria": "sintomas",
+      "subcategoria": "dor muscular (mialgia)",
+      "pergunta": "Qual a relevância de dor muscular (mialgia) na dengue?",
+      "resposta": "DOR MUSCULAR (MIALGIA): Presente em 77.3% de todos os casos e em 71.5% dos casos graves. A presença isolada deste sintoma não indica gravidade, mas deve ser monitorada junto com outros sinais.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"sintoma\": \"dor muscular (mialgia)\", \"frequencia_geral\": 77.3, \"frequencia_graves\": 71.5}"
+    },
+    {
+      "categoria": "sintomas",
+      "subcategoria": "cefaleia (dor de cabeça)",
+      "pergunta": "Qual a relevância de cefaleia (dor de cabeça) na dengue?",
+      "resposta": "CEFALEIA (DOR DE CABEÇA): Presente em 77.4% de todos os casos e em 53.5% dos casos graves. A presença isolada deste sintoma não indica gravidade, mas deve ser monitorada junto com outros sinais.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"sintoma\": \"cefaleia (dor de cabe\\u00e7a)\", \"frequencia_geral\": 77.4, \"frequencia_graves\": 53.5}"
+    },
+    {
+      "categoria": "sintomas",
+      "subcategoria": "exantema (manchas na pele)",
+      "pergunta": "Qual a relevância de exantema (manchas na pele) na dengue?",
+      "resposta": "EXANTEMA (MANCHAS NA PELE): Presente em 10.1% de todos os casos e em 7.9% dos casos graves. A presença isolada deste sintoma não indica gravidade, mas deve ser monitorada junto com outros sinais.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"sintoma\": \"exantema (manchas na pele)\", \"frequencia_geral\": 10.1, \"frequencia_graves\": 7.9}"
+    },
+    {
+      "categoria": "sintomas",
+      "subcategoria": "vômito",
+      "pergunta": "Qual a relevância de vômito na dengue?",
+      "resposta": "VÔMITO: Presente em 25.8% de todos os casos e em 41.1% dos casos graves. A presença isolada deste sintoma não indica gravidade, mas deve ser monitorada junto com outros sinais.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"sintoma\": \"v\\u00f4mito\", \"frequencia_geral\": 25.8, \"frequencia_graves\": 41.1}"
+    },
+    {
+      "categoria": "sintomas",
+      "subcategoria": "náusea",
+      "pergunta": "Qual a relevância de náusea na dengue?",
+      "resposta": "NÁUSEA: Presente em 41.4% de todos os casos e em 44.8% dos casos graves. A presença isolada deste sintoma não indica gravidade, mas deve ser monitorada junto com outros sinais.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"sintoma\": \"n\\u00e1usea\", \"frequencia_geral\": 41.4, \"frequencia_graves\": 44.8}"
+    },
+    {
+      "categoria": "sintomas",
+      "subcategoria": "dor nas costas",
+      "pergunta": "Qual a relevância de dor nas costas na dengue?",
+      "resposta": "DOR NAS COSTAS: Presente em 29.4% de todos os casos e em 21.9% dos casos graves. A presença isolada deste sintoma não indica gravidade, mas deve ser monitorada junto com outros sinais.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"sintoma\": \"dor nas costas\", \"frequencia_geral\": 29.4, \"frequencia_graves\": 21.9}"
+    },
+    {
+      "categoria": "sintomas",
+      "subcategoria": "conjuntivite",
+      "pergunta": "Qual a relevância de conjuntivite na dengue?",
+      "resposta": "CONJUNTIVITE: Presente em 3.6% de todos os casos e em 2.1% dos casos graves. A presença isolada deste sintoma não indica gravidade, mas deve ser monitorada junto com outros sinais.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"sintoma\": \"conjuntivite\", \"frequencia_geral\": 3.6, \"frequencia_graves\": 2.1}"
+    },
+    {
+      "categoria": "sintomas",
+      "subcategoria": "artrite",
+      "pergunta": "Qual a relevância de artrite na dengue?",
+      "resposta": "ARTRITE: Presente em 9.5% de todos os casos e em 6.4% dos casos graves. A presença isolada deste sintoma não indica gravidade, mas deve ser monitorada junto com outros sinais.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"sintoma\": \"artrite\", \"frequencia_geral\": 9.5, \"frequencia_graves\": 6.4}"
+    },
+    {
+      "categoria": "sintomas",
+      "subcategoria": "artralgia (dor nas articulações)",
+      "pergunta": "Qual a relevância de artralgia (dor nas articulações) na dengue?",
+      "resposta": "ARTRALGIA (DOR NAS ARTICULAÇÕES): Presente em 17.3% de todos os casos e em 15.9% dos casos graves. A presença isolada deste sintoma não indica gravidade, mas deve ser monitorada junto com outros sinais.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"sintoma\": \"artralgia (dor nas articula\\u00e7\\u00f5es)\", \"frequencia_geral\": 17.3, \"frequencia_graves\": 15.9}"
+    },
+    {
+      "categoria": "sintomas",
+      "subcategoria": "dor retro-orbital",
+      "pergunta": "Qual a relevância de dor retro-orbital na dengue?",
+      "resposta": "DOR RETRO-ORBITAL: Presente em 30.7% de todos os casos e em 15.9% dos casos graves. A presença isolada deste sintoma não indica gravidade, mas deve ser monitorada junto com outros sinais.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"sintoma\": \"dor retro-orbital\", \"frequencia_geral\": 30.7, \"frequencia_graves\": 15.9}"
+    },
+    {
+      "categoria": "comorbidades",
+      "subcategoria": "diabetes mellitus",
+      "pergunta": "Qual o impacto de diabetes mellitus na evolução da dengue?",
+      "resposta": "Pacientes com DIABETES MELLITUS têm taxa de óbito de 0.563% (vs 0.072% sem a comorbidade). Taxa de hospitalização: 7.60%. Risco relativo de óbito: 7.8x. Pacientes com esta comorbidade devem ser classificados como GRUPO B ou superior.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"comorbidade\": \"diabetes mellitus\", \"n_casos\": 459619, \"taxa_obito\": 0.563, \"taxa_hospitalizacao\": 7.6, \"risco_relativo\": 7.8}"
+    },
+    {
+      "categoria": "comorbidades",
+      "subcategoria": "doença hematológica",
+      "pergunta": "Qual o impacto de doença hematológica na evolução da dengue?",
+      "resposta": "Pacientes com DOENÇA HEMATOLÓGICA têm taxa de óbito de 0.692% (vs 0.090% sem a comorbidade). Taxa de hospitalização: 7.98%. Risco relativo de óbito: 7.7x. Pacientes com esta comorbidade devem ser classificados como GRUPO B ou superior.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"comorbidade\": \"doen\\u00e7a hematol\\u00f3gica\", \"n_casos\": 59270, \"taxa_obito\": 0.692, \"taxa_hospitalizacao\": 7.98, \"risco_relativo\": 7.7}"
+    },
+    {
+      "categoria": "comorbidades",
+      "subcategoria": "hepatopatia",
+      "pergunta": "Qual o impacto de hepatopatia na evolução da dengue?",
+      "resposta": "Pacientes com HEPATOPATIA têm taxa de óbito de 0.423% (vs 0.091% sem a comorbidade). Taxa de hospitalização: 6.81%. Risco relativo de óbito: 4.6x. Pacientes com esta comorbidade devem ser classificados como GRUPO B ou superior.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"comorbidade\": \"hepatopatia\", \"n_casos\": 58447, \"taxa_obito\": 0.423, \"taxa_hospitalizacao\": 6.81, \"risco_relativo\": 4.6}"
+    },
+    {
+      "categoria": "comorbidades",
+      "subcategoria": "doença renal crônica",
+      "pergunta": "Qual o impacto de doença renal crônica na evolução da dengue?",
+      "resposta": "Pacientes com DOENÇA RENAL CRÔNICA têm taxa de óbito de 1.363% (vs 0.087% sem a comorbidade). Taxa de hospitalização: 11.50%. Risco relativo de óbito: 15.8x. Pacientes com esta comorbidade devem ser classificados como GRUPO B ou superior.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"comorbidade\": \"doen\\u00e7a renal cr\\u00f4nica\", \"n_casos\": 54514, \"taxa_obito\": 1.363, \"taxa_hospitalizacao\": 11.5, \"risco_relativo\": 15.8}"
+    },
+    {
+      "categoria": "comorbidades",
+      "subcategoria": "hipertensão arterial",
+      "pergunta": "Qual o impacto de hipertensão arterial na evolução da dengue?",
+      "resposta": "Pacientes com HIPERTENSÃO ARTERIAL têm taxa de óbito de 0.451% (vs 0.055% sem a comorbidade). Taxa de hospitalização: 6.59%. Risco relativo de óbito: 8.2x. Pacientes com esta comorbidade devem ser classificados como GRUPO B ou superior.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"comorbidade\": \"hipertens\\u00e3o arterial\", \"n_casos\": 1055160, \"taxa_obito\": 0.451, \"taxa_hospitalizacao\": 6.59, \"risco_relativo\": 8.2}"
+    },
+    {
+      "categoria": "comorbidades",
+      "subcategoria": "doença ácido-péptica",
+      "pergunta": "Qual o impacto de doença ácido-péptica na evolução da dengue?",
+      "resposta": "Pacientes com DOENÇA ÁCIDO-PÉPTICA têm taxa de óbito de 0.135% (vs 0.093% sem a comorbidade). Taxa de hospitalização: 3.95%. Risco relativo de óbito: 1.5x. Pacientes com esta comorbidade devem ser classificados como GRUPO B ou superior.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"comorbidade\": \"doen\\u00e7a \\u00e1cido-p\\u00e9ptica\", \"n_casos\": 58315, \"taxa_obito\": 0.135, \"taxa_hospitalizacao\": 3.95, \"risco_relativo\": 1.5}"
+    },
+    {
+      "categoria": "comorbidades",
+      "subcategoria": "doença autoimune",
+      "pergunta": "Qual o impacto de doença autoimune na evolução da dengue?",
+      "resposta": "Pacientes com DOENÇA AUTOIMUNE têm taxa de óbito de 0.473% (vs 0.090% sem a comorbidade). Taxa de hospitalização: 7.59%. Risco relativo de óbito: 5.2x. Pacientes com esta comorbidade devem ser classificados como GRUPO B ou superior.",
+      "fonte": "SINAN/DATASUS 2025",
+      "dados": "{\"comorbidade\": \"doen\\u00e7a autoimune\", \"n_casos\": 73435, \"taxa_obito\": 0.473, \"taxa_hospitalizacao\": 7.59, \"risco_relativo\": 5.2}"
+    },
+    {
+      "categoria": "conduta",
+      "subcategoria": "grupo_a",
+      "pergunta": "Qual a conduta para paciente Grupo A (dengue sem sinais de alarme)?",
+      "resposta": "GRUPO A - DENGUE SEM SINAIS DE ALARME: Atendimento ambulatorial. Hidratação oral: 60-80ml/kg/dia (1/3 soro de reidratação + 2/3 líquidos). Sintomáticos: Paracetamol ou Dipirona. NÃO usar AAS, Ibuprofeno ou outros AINEs. Retorno em 24-48h ou imediatamente se sinais de alarme. Orientar paciente sobre sinais de alarme.",
+      "fonte": "Protocolo MS 2024",
+      "dados": "{\"grupo\": \"A\", \"local\": \"ambulatorial\", \"internacao\": false}"
+    },
+    {
+      "categoria": "conduta",
+      "subcategoria": "grupo_b",
+      "pergunta": "Qual a conduta para paciente Grupo B (condições especiais)?",
+      "resposta": "GRUPO B - CONDIÇÕES ESPECIAIS (gestantes, idosos >65, crianças <2, comorbidades): Unidade com leito de observação. Hidratação oral supervisionada: 80ml/kg/dia. Hemograma com plaquetas obrigatório. Reavaliação diária até 48h após febre. Orientar sinais de alarme para retorno imediato.",
+      "fonte": "Protocolo MS 2024",
+      "dados": "{\"grupo\": \"B\", \"local\": \"observa\\u00e7\\u00e3o\", \"internacao\": false}"
+    },
+    {
+      "categoria": "conduta",
+      "subcategoria": "grupo_c",
+      "pergunta": "Qual a conduta para paciente Grupo C (dengue com sinais de alarme)?",
+      "resposta": "GRUPO C - DENGUE COM SINAIS DE ALARME: URGÊNCIA - Atendimento em até 30 minutos. Internação em leito de observação ou enfermaria. Hidratação IV: 10ml/kg/hora nas primeiras 2h, depois reavaliar. Hematócrito a cada 2-4h. Monitorização contínua. Preparar para transferência se necessário.",
+      "fonte": "Protocolo MS 2024",
+      "dados": "{\"grupo\": \"C\", \"local\": \"interna\\u00e7\\u00e3o\", \"internacao\": true}"
+    },
+    {
+      "categoria": "conduta",
+      "subcategoria": "grupo_d",
+      "pergunta": "Qual a conduta para paciente Grupo D (dengue grave)?",
+      "resposta": "GRUPO D - DENGUE GRAVE: EMERGÊNCIA - Atendimento IMEDIATO. UTI ou sala de emergência. Acesso venoso calibroso. Reposição volêmica: 20ml/kg em 20 min, repetir até 3x se necessário. Hemograma, função renal/hepática, coagulograma. Avaliar hemoderivados. Monitorização contínua. Suporte avançado de vida.",
+      "fonte": "Protocolo MS 2024",
+      "dados": "{\"grupo\": \"D\", \"local\": \"UTI/emerg\\u00eancia\", \"internacao\": true}"
+    },
+    {
+      "categoria": "periodo_critico",
+      "subcategoria": "evolucao_temporal",
+      "pergunta": "Qual o período crítico da dengue?",
+      "resposta": "O PERÍODO CRÍTICO da dengue ocorre entre o 3º e 7º dia de doença, geralmente quando a febre começa a ceder. Neste período há maior risco de evolução para formas graves. Pacientes devem ser orientados a procurar atendimento IMEDIATAMENTE se apresentarem: vômitos persistentes, dor abdominal intensa, sangramento, tontura, sonolência excessiva.",
+      "fonte": "Protocolo MS 2024",
+      "dados": "{\"periodo_inicio\": 3, \"periodo_fim\": 7, \"momento\": \"defervesc\\u00eancia\"}"
+    },
+    {
+      "categoria": "hidratacao",
+      "subcategoria": "oral_adulto",
+      "pergunta": "Como calcular hidratação oral para adulto com dengue?",
+      "resposta": "HIDRATAÇÃO ORAL ADULTO: 60-80ml/kg/dia. Para adulto de 70kg: 4.200 a 5.600ml/dia. Distribuir: 1/3 soro de reidratação oral (SRO) + 2/3 líquidos (água, sucos, água de coco). Oferecer líquidos frequentemente, mesmo sem sede. Evitar refrigerantes e bebidas muito açucaradas.",
+      "fonte": "Protocolo MS 2024",
+      "dados": "{\"tipo\": \"oral\", \"volume_kg\": \"60-80ml/kg/dia\"}"
+    },
+    {
+      "categoria": "hidratacao",
+      "subcategoria": "venosa_alarme",
+      "pergunta": "Como fazer hidratação venosa em dengue com sinais de alarme?",
+      "resposta": "HIDRATAÇÃO VENOSA - SINAIS DE ALARME: Iniciar com 10ml/kg/hora de SF 0.9% ou Ringer Lactato nas primeiras 2 horas. Reavaliar hematócrito e sinais vitais. Se melhora: reduzir para 5-7ml/kg/h por 2-4h. Se piora ou sem melhora: aumentar para 15-20ml/kg/h e reavaliar.",
+      "fonte": "Protocolo MS 2024",
+      "dados": "{\"tipo\": \"venosa\", \"fase_inicial\": \"10ml/kg/h\"}"
+    },
+    {
+      "categoria": "hidratacao",
+      "subcategoria": "venosa_grave",
+      "pergunta": "Como fazer hidratação venosa em dengue grave?",
+      "resposta": "HIDRATAÇÃO VENOSA - DENGUE GRAVE: Expansão volêmica rápida: 20ml/kg em 20 minutos com SF 0.9% ou Ringer. Repetir até 3 vezes se necessário. Após estabilização: manter 10ml/kg/h. Monitorar: diurese (mínimo 0.5ml/kg/h), sinais vitais, hematócrito seriado. Considerar coloides se sem resposta.",
+      "fonte": "Protocolo MS 2024",
+      "dados": "{\"tipo\": \"venosa_emergencia\", \"expansao\": \"20ml/kg em 20min\"}"
+    },
+    {
+      "categoria": "medicamentos",
+      "subcategoria": "contraindicados",
+      "pergunta": "Quais medicamentos são contraindicados na dengue?",
+      "resposta": "MEDICAMENTOS CONTRAINDICADOS NA DENGUE: AAS (Aspirina), Ibuprofeno, Diclofenaco, Nimesulida e outros AINEs. Estes medicamentos aumentam o risco de sangramento por inibirem a função plaquetária. Também contraindicados: corticoides (exceto em casos específicos) e anticoagulantes (avaliar risco-benefício).",
+      "fonte": "Protocolo MS 2024",
+      "dados": "{\"contraindicados\": [\"AAS\", \"Ibuprofeno\", \"Diclofenaco\", \"Nimesulida\", \"AINEs\"]}"
+    },
+    {
+      "categoria": "medicamentos",
+      "subcategoria": "permitidos",
+      "pergunta": "Quais medicamentos podem ser usados na dengue?",
+      "resposta": "MEDICAMENTOS PERMITIDOS NA DENGUE: Para febre e dor: Paracetamol (500-750mg a cada 6h) ou Dipirona (500-1000mg a cada 6h). Para náuseas: Metoclopramida ou Bromoprida. Para prurido: Anti-histamínicos. Manter hidratação como principal tratamento.",
+      "fonte": "Protocolo MS 2024",
+      "dados": "{\"permitidos\": [\"Paracetamol\", \"Dipirona\", \"Metoclopramida\", \"Anti-histam\\u00ednicos\"]}"
+    },
+    {
+      "categoria": "exames",
+      "subcategoria": "hemograma",
+      "pergunta": "Como interpretar hemograma na dengue?",
+      "resposta": "HEMOGRAMA NA DENGUE: Plaquetas <100.000/mm³ indica trombocitopenia importante. Hematócrito elevado (>20% do basal ou >45% em homens/>40% em mulheres) indica hemoconcentração. Leucopenia é comum. Monitorar hematócrito seriado para detectar hemoconcentração precoce.",
+      "fonte": "Protocolo MS 2024",
+      "dados": "{\"plaquetas_alarme\": 100000, \"hematocrito_alarme_h\": 45, \"hematocrito_alarme_m\": 40}"
+    },
+    {
+      "categoria": "exames",
+      "subcategoria": "quando_solicitar",
+      "pergunta": "Quando solicitar exames na dengue?",
+      "resposta": "EXAMES NA DENGUE: Grupo A: hemograma a critério clínico. Grupo B: hemograma obrigatório. Grupo C: hemograma + hematócrito seriado (2-4h). Grupo D: hemograma, hematócrito seriado, função renal, função hepática, coagulograma, gasometria.",
+      "fonte": "Protocolo MS 2024",
+      "dados": "{\"grupo_a\": \"opcional\", \"grupo_b\": \"obrigat\\u00f3rio\", \"grupo_c\": \"seriado\", \"grupo_d\": \"completo\"}"
+    }
+  ],
+  "estatisticas_resumo": {
+    "por_faixa_etaria": {
+      "Adulto (23-59)": {
+        "n_casos": 6196354,
+        "taxa_obito": 0.0507,
+        "taxa_hospitalizacao": 2.56
+      },
+      "Idoso (60+)": {
+        "n_casos": 1555379,
+        "taxa_obito": 0.4083,
+        "taxa_hospitalizacao": 6.3
+      },
+      "Lactente (0-2)": {
+        "n_casos": 154038,
+        "taxa_obito": 0.0824,
+        "taxa_hospitalizacao": 6.69
+      },
+      "Jovem (15-22)": {
+        "n_casos": 1516112,
+        "taxa_obito": 0.0205,
+        "taxa_hospitalizacao": 2.23
+      },
+      "Criança (2-14)": {
+        "n_casos": 1575844,
+        "taxa_obito": 0.0179,
+        "taxa_hospitalizacao": 3.7
+      }
+    },
+    "taxa_obito_geral": 0.0928,
+    "taxa_hospitalizacao_geral": 3.27
+  }
+}

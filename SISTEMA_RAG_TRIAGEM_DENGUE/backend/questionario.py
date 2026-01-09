@@ -44,7 +44,7 @@ class QuestionarioTriagemDengue:
         """
         Inicializa questionário
         
-        Args:
+        Argumentos:
             config_path: Caminho para arquivo de configuração YAML
         """
         self.config_path = config_path

@@ -12,13 +12,18 @@ from typing import List, Dict, Any, Optional, Tuple
 from datetime import datetime
 from dotenv import load_dotenv
 
-from langchain.text_splitter import RecursiveCharacterTextSplitter
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
-from langchain_openai import ChatOpenAI, OpenAIEmbeddings
-from langchain.chains import RetrievalQA
-from langchain.prompts import PromptTemplate
-from langchain.schema import Document
+from langchain_core.prompts import PromptTemplate
+from langchain_core.documents import Document
+
+# Importações opcionais para LLM
+try:
+    from langchain_openai import ChatOpenAI, OpenAIEmbeddings
+except ImportError:
+    ChatOpenAI = None
+    OpenAIEmbeddings = None
 from loguru import logger
 
 
@@ -35,7 +40,7 @@ class DengueRAGSystem:
         """
         Inicializa o sistema RAG
         
-        Args:
+        Argumentos:
             knowledge_base_path: Caminho para base de conhecimento (JSON)
             vector_store_path: Caminho para salvar/carregar vector store
             embedding_model: Modelo de embeddings
@@ -263,10 +268,10 @@ Análise:"""
         """
         Analisa dados de um paciente e retorna avaliação de risco
         
-        Args:
+        Argumentos:
             patient_data: Dicionário com dados do paciente
             
-        Returns:
+        Retorna:
             Dicionário com análise, classificação de risco, recomendações e citações
         """
         inicio = datetime.now()
@@ -489,7 +494,7 @@ Análise:"""
         """
         Calcula confiança baseada em múltiplos fatores
         
-        Returns:
+        Retorna:
             (score_confianca, nivel_confianca)
         """
         score = 0.0
@@ -542,7 +547,7 @@ Análise:"""
         """
         Verifica se o sistema deve se abster de dar resposta definitiva
         
-        Returns:
+        Retorna:
             (deve_abstenir, motivo)
         """
         ABSTENTION_THRESHOLD = 0.50
@@ -620,13 +625,13 @@ def initialize_system(
     force_reindex: bool = False
 ) -> DengueRAGSystem:
     """
-    Função helper para inicializar sistema RAG completo
+    Função auxiliar para inicializar sistema RAG completo
     
-    Args:
+    Argumentos:
         knowledge_base_path: Caminho para base de conhecimento
         force_reindex: Se True, recria vector store
         
-    Returns:
+    Retorna:
         Sistema RAG configurado e pronto para uso
     """
     

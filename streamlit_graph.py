@@ -7,7 +7,7 @@ import matplotlib.pyplot as plt
 st.set_page_config(page_title="Dengue Brasil 2025 | EDA", layout="wide")
 
 # ----------------------------
-# Helpers 
+# Funções Auxiliares 
 # ----------------------------
 UF_NOME = {
     11: "Rondônia", 12: "Acre", 13: "Amazonas", 14: "Roraima", 15: "Pará", 16: "Amapá", 17: "Tocantins",

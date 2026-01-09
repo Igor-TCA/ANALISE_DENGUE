@@ -1,5 +1,5 @@
 """
-Frontend Streamlit para Sistema de Triagem de Dengue com RAG
+Frontend Streamlit para Sistema de Triagem de Dengue com IA
 Interface interativa para enfermeiros realizarem triagem de pacientes
 """
 
@@ -16,7 +16,14 @@ backend_path = Path(__file__).parent.parent / 'backend'
 sys.path.insert(0, str(backend_path))
 
 from questionario import QuestionarioTriagemDengue, TipoPergunta
-from rag_system import initialize_system
+
+# Importar analisador local (sempre disponível)
+IA_AVAILABLE = False
+try:
+    from local_analyzer import initialize_local_analyzer
+    IA_AVAILABLE = True
+except ImportError:
+    initialize_local_analyzer = None
 
 # Configuração da página
 st.set_page_config(
@@ -70,10 +77,14 @@ st.markdown("""
         font-size: 1.2rem;
     }
     .section-header {
-        background-color: #f0f2f6;
+        background-color: #262730;
         padding: 0.5rem 1rem;
         border-radius: 0.3rem;
         margin: 1rem 0;
+        color: #fafafa;
+    }
+    .section-header h3 {
+        color: #fafafa !important;
     }
 </style>
 """, unsafe_allow_html=True)
@@ -83,9 +94,9 @@ st.markdown("""
 if 'questionario' not in st.session_state:
     st.session_state.questionario = QuestionarioTriagemDengue()
 
-if 'rag_system' not in st.session_state:
-    st.session_state.rag_system = None
-    st.session_state.rag_loaded = False
+if 'ia_system' not in st.session_state:
+    st.session_state.ia_system = None
+    st.session_state.ia_loaded = False
 
 if 'analise_completa' not in st.session_state:
     st.session_state.analise_completa = None
@@ -93,20 +104,41 @@ if 'analise_completa' not in st.session_state:
 if 'historico' not in st.session_state:
     st.session_state.historico = []
 
+if 'show_save_dialog' not in st.session_state:
+    st.session_state.show_save_dialog = False
 
-def carregar_rag_system():
-    """Carrega sistema RAG (lazy loading)"""
-    if not st.session_state.rag_loaded:
+if 'nav_to_resultado' not in st.session_state:
+    st.session_state.nav_to_resultado = False
+
+# Carregar IA automaticamente no início
+if IA_AVAILABLE and not st.session_state.ia_loaded:
+    try:
+        data_path = Path(__file__).parent.parent / 'data'
+        st.session_state.ia_system = initialize_local_analyzer(
+            knowledge_base_path=str(data_path)
+        )
+        st.session_state.ia_loaded = True
+    except Exception as e:
+        st.session_state.ia_loaded = False
+
+
+def carregar_ia_system():
+    """Carrega sistema de IA (lazy loading)"""
+    if not IA_AVAILABLE:
+        st.warning("Sistema de IA não disponível.")
+        return False
+    
+    if not st.session_state.ia_loaded:
+        data_path = Path(__file__).parent.parent / 'data'
         with st.spinner('Inicializando sistema de inteligência artificial...'):
             try:
-                st.session_state.rag_system = initialize_system(
-                    knowledge_base_path='../data/knowledge_base.json',
-                    force_reindex=False
+                st.session_state.ia_system = initialize_local_analyzer(
+                    knowledge_base_path=str(data_path)
                 )
-                st.session_state.rag_loaded = True
+                st.session_state.ia_loaded = True
                 return True
             except Exception as e:
-                st.error(f"Erro ao carregar sistema RAG: {e}")
+                st.error(f"Erro ao carregar sistema de IA: {e}")
                 return False
     return True
 
@@ -283,7 +315,7 @@ def main():
         
         # Informações do sistema
         st.subheader("Status do Sistema")
-        if st.session_state.rag_loaded:
+        if st.session_state.ia_loaded:
             st.success("✅ IA Ativa")
         else:
             st.warning("⏳ IA Desativada")
@@ -296,7 +328,15 @@ def main():
         if st.button("🔄 Nova Triagem", use_container_width=True):
             st.session_state.questionario = QuestionarioTriagemDengue()
             st.session_state.analise_completa = None
+            st.session_state.show_save_dialog = False
+            st.session_state.nav_to_resultado = False
             st.rerun()
+    
+    # Verificar navegação automática para resultado
+    if st.session_state.nav_to_resultado:
+        st.session_state.nav_to_resultado = False
+        pagina_resultado()
+        return
     
     # Páginas
     if pagina == "📝 Nova Triagem":
@@ -311,6 +351,27 @@ def main():
 
 def pagina_triagem():
     """Página de triagem do paciente"""
+    
+    # Diálogo de confirmação para salvar antes de sair
+    if st.session_state.show_save_dialog:
+        st.warning("⚠️ Você tem uma triagem não salva!")
+        col1, col2, col3 = st.columns(3)
+        with col1:
+            if st.button("💾 Salvar e Ver Resultados", use_container_width=True, type="primary"):
+                registrar_triagem()
+                st.session_state.show_save_dialog = False
+                st.session_state.nav_to_resultado = True
+                st.rerun()
+        with col2:
+            if st.button("🚫 Não Salvar", use_container_width=True):
+                st.session_state.show_save_dialog = False
+                st.session_state.nav_to_resultado = True
+                st.rerun()
+        with col3:
+            if st.button("↩️ Cancelar", use_container_width=True):
+                st.session_state.show_save_dialog = False
+                st.rerun()
+        return
     
     st.header("Questionário de Triagem")
     
@@ -338,17 +399,27 @@ def pagina_triagem():
             
             st.divider()
     
-    # Botão de análise
+    # Botões de ação
     st.divider()
-    col1, col2, col3 = st.columns([1, 2, 1])
+    col1, col2, col3 = st.columns([1, 1, 1])
+    
+    with col1:
+        if st.button("💾 Registrar Triagem", use_container_width=True, type="primary"):
+            registrar_triagem()
     
     with col2:
-        if st.button("🔍 Analisar Paciente com IA", use_container_width=True, type="primary"):
-            realizar_analise()
+        if st.button("📊 Visualizar Resultados", use_container_width=True):
+            visualizar_resultados()
+    
+    with col3:
+        if st.button("🔄 Limpar Formulário", use_container_width=True):
+            st.session_state.questionario = QuestionarioTriagemDengue()
+            st.session_state.analise_completa = None
+            st.rerun()
 
 
-def realizar_analise():
-    """Realiza análise completa do paciente"""
+def registrar_triagem():
+    """Registra a triagem e realiza análise com IA"""
     
     questionario = st.session_state.questionario
     
@@ -360,24 +431,24 @@ def realizar_analise():
     
     if perguntas_faltando:
         st.error(f"Por favor, responda todas as perguntas obrigatórias:")
-        for p in perguntas_faltando[:5]:  # Mostrar apenas as 5 primeiras
+        for p in perguntas_faltando[:5]:
             st.write(f"- {p}")
         return
     
-    with st.spinner('Realizando análise completa...'):
+    with st.spinner('Registrando triagem e analisando com IA...'):
         # Classificação por score
         risco_score = questionario.classificar_risco()
         
-        # Preparar dados para RAG
+        # Preparar dados para análise
         dados_paciente = questionario.gerar_dados_paciente()
         
-        # Análise com IA (se disponível)
+        # Análise com IA
         analise_ia = None
-        if carregar_rag_system() and st.session_state.rag_system:
+        if carregar_ia_system() and st.session_state.ia_system:
             try:
-                analise_ia = st.session_state.rag_system.analyze_patient(dados_paciente)
+                analise_ia = st.session_state.ia_system.analyze_patient(dados_paciente)
             except Exception as e:
-                st.warning(f"Sistema de IA não disponível: {e}")
+                st.warning(f"Erro na análise de IA: {e}")
         
         # Consolidar análise
         st.session_state.analise_completa = {
@@ -385,17 +456,39 @@ def realizar_analise():
             'risco_score': risco_score,
             'dados_paciente': dados_paciente,
             'analise_ia': analise_ia,
-            'respostas_completas': questionario.respostas.copy()
+            'respostas_completas': questionario.respostas.copy(),
+            'registrada': True
         }
         
         # Adicionar ao histórico
         st.session_state.historico.append(st.session_state.analise_completa)
         
-        st.success("✅ Análise concluída!")
+        st.success("✅ Triagem registrada com sucesso!")
         st.balloons()
-        
-        # Navegar para resultado
+
+
+def visualizar_resultados():
+    """Visualiza resultados - pergunta se deseja salvar antes se não foi registrada"""
+    
+    questionario = st.session_state.questionario
+    
+    # Verificar se há respostas não salvas
+    tem_respostas = len(questionario.respostas) > 0
+    ja_registrada = st.session_state.analise_completa is not None and st.session_state.analise_completa.get('registrada', False)
+    
+    if tem_respostas and not ja_registrada:
+        # Mostrar diálogo de confirmação
+        st.session_state.show_save_dialog = True
         st.rerun()
+    else:
+        # Ir direto para resultados
+        st.session_state.nav_to_resultado = True
+        st.rerun()
+
+
+def realizar_analise():
+    """Realiza análise completa do paciente (mantida para compatibilidade)"""
+    registrar_triagem()
 
 
 def pagina_resultado():
@@ -493,23 +586,48 @@ def pagina_resultado():
         col1, col2 = st.columns([3, 1])
         
         with col1:
-            st.write(ia['analysis'])
+            # Exibir análise formatada
+            st.markdown(ia.get('analise', 'Análise não disponível'))
         
         with col2:
-            st.metric("Risco (IA)", ia['risk_level'])
-            st.metric("Confiança", f"{ia['confidence']:.0%}")
+            st.metric("Classificação", ia.get('classificacao', 'N/A'))
+            st.metric("Nível de Risco", ia.get('nivel_risco', 'N/A'))
+            confianca = ia.get('confianca', (0, 'N/A'))
+            if isinstance(confianca, tuple):
+                st.metric("Confiança", f"{confianca[0]:.0%} ({confianca[1]})")
+            else:
+                st.metric("Confiança", str(confianca))
         
-        # Casos similares
-        if ia.get('similar_cases'):
-            with st.expander("📚 Casos Similares da Base de Dados"):
-                for idx, caso in enumerate(ia['similar_cases'], 1):
-                    st.write(f"**Caso {idx}:**")
-                    st.write(caso['content'])
-                    st.write(f"*Tipo: {caso['metadata'].get('tipo', 'N/A')}*")
+        # Conduta recomendada
+        if ia.get('conduta'):
+            with st.expander("📝 Conduta Recomendada", expanded=True):
+                conduta = ia['conduta']
+                st.write(f"**Local:** {conduta.get('local', 'N/A')}")
+                st.write(f"**Prioridade:** {conduta.get('prioridade', 'N/A')}")
+                st.write(f"**Hidratação:** {conduta.get('hidratacao', 'N/A')}")
+                st.write(f"**Exames:** {conduta.get('exames', 'N/A')}")
+                st.write(f"**Reavaliação:** {conduta.get('reavaliacao', 'N/A')}")
+                if conduta.get('orientacoes'):
+                    st.write("**Orientações:**")
+                    for o in conduta['orientacoes']:
+                        st.write(f"- {o}")
+        
+        # Fatores de risco identificados
+        if ia.get('fatores_risco'):
+            with st.expander("⚠️ Fatores de Risco Identificados"):
+                for fator in ia['fatores_risco']:
+                    st.write(f"**{fator.get('fator', 'N/A')}** - Impacto: {fator.get('impacto', 'N/A')}")
+                    st.write(f"_{fator.get('descricao', '')}_")
                     st.divider()
+        
+        # Citações/Referências
+        if ia.get('citacoes'):
+            with st.expander("📚 Referências"):
+                for cit in ia['citacoes']:
+                    st.write(f"- **{cit.get('fonte', 'N/A')}**: {cit.get('documento', '')} ({cit.get('ano', '')})")
     
     else:
-        st.info("💡 Sistema de IA não foi utilizado nesta análise. Configure as chaves de API para habilitar.")
+        st.info("💡 Registre a triagem para obter análise completa com IA.")
     
     st.divider()
     
@@ -594,9 +712,8 @@ def pagina_sobre():
     para auxiliar enfermeiros na triagem e avaliação de risco de pacientes com suspeita de dengue.
     
     ### 🧠 Tecnologia
-    - **Base de Conhecimento**: Treinado com dados reais do SINAN/DATASUS (2025)
+    - **Base de Conhecimento**: Treinado com dados reais do SINAN/DATASUS
     - **RAG**: Recuperação de casos similares para contextualizar análise
-    - **LLM**: GPT-4 ou Claude para análise inteligente
     - **Embeddings**: Sentence Transformers para busca semântica
     - **Vector Store**: ChromaDB para armazenamento eficiente
     
@@ -629,21 +746,11 @@ def pagina_sobre():
     - Dengue grave
     - ATENDIMENTO IMEDIATO
     - Encaminhar para emergência
-    
-    ### 📚 Base de Dados
-    - **Fonte**: SINAN/DATASUS
-    - **Período**: 2025
-    - **Casos**: 1.502.259 notificações
-    - **Casos graves analisados**: Óbitos + Hospitalizações + Dengue grave
+
     
     ### ⚠️ Importante
-    Este sistema é uma **ferramenta de apoio** à decisão clínica. A avaliação médica 
+    Este sistema é uma ideia de **ferramenta de apoio** à decisão clínica. A avaliação médica 
     presencial permanece essencial para o diagnóstico e tratamento adequados.
-    
-    ### 👨‍💻 Desenvolvimento
-    Sistema desenvolvido para auxiliar profissionais de saúde na triagem inicial de 
-    pacientes com suspeita de dengue, utilizando tecnologia de ponta em IA e análise 
-    de dados epidemiológicos.
     
     ---
     
