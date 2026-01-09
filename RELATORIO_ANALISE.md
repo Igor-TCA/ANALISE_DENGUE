@@ -1,308 +1,307 @@
-# 🦟 Relatório - Dengue no Brasil (2025) | Resultados da EDA (DATASUS / SINAN)
+# 🦟 Relatorio - Dengue no Brasil (2022-2025) | Resultados da Analise Exploratoria
 
 <center>
 
-## Contexto e objetivo
+## Contexto e Objetivo
 
 </center>
 
-Este relatório consolida os **principais resultados** de uma **Análise Exploratória de Dados (EDA)** sobre **casos notificados de dengue no Brasil em 2025**, utilizando microdados do **SINAN disponibilizados pelo DATASUS**.  
-O foco é descrever **perfil demográfico**, **perfil clínico (sintomas)**, **distribuição territorial** e **sazonalidade**.
+Este relatorio consolida os **principais resultados** de uma **Analise Exploratoria de Dados (EDA)** sobre **casos notificados de dengue no Brasil entre 2022 e 2025**, utilizando microdados do **SINAN disponibilizados pelo DATASUS**.
 
-> Importante: os resultados abaixo refletem **dados de notificação** (não necessariamente casos confirmados).  
-> Onde houver “mortalidade”, a métrica utilizada neste estudo é **proporção de óbitos entre casos notificados** (óbitos/casos), que é mais próxima de **letalidade entre notificados** do que de taxa de mortalidade populacional.
+O projeto nasceu de um estudo academico sobre os dados de dengue de 2025 e evoluiu para uma **analise consolidada de 4 anos** (2022-2025), gerando insights que fundamentaram o desenvolvimento de um **Sistema de Triagem Inteligente com RAG**.
+
+Importante: os resultados abaixo refletem **dados de notificacao** (nao necessariamente casos confirmados).  
+A metrica de mortalidade utilizada e a **proporcao de obitos entre casos notificados** (obitos/casos).
 
 ---
 
 <center>
 
-## Fonte de dados
+## Fonte de Dados
 </center>
 
-- **DATASUS / SINAN** - microdados de notificações de dengue (CSV, 2025)
-- **SINAN** - legenda/codificação de variáveis (sintomas, evolução, idade)
+- **DATASUS / SINAN** - microdados de notificacoes de dengue (CSV, 2022-2025)
+- **SINAN** - legenda/codificacao de variaveis (sintomas, evolucao, idade)
 
 ---
 
 <center>
 
----
+## Visao Geral do Dataset
 
-## Visão geral do dataset
+</center>
 
-| Métrica | Valor |
+| Metrica | Valor |
 |---|---:|
-| **Total de registros** | **1.502.259** |
-| **Período** | **2025** |
+| **Total de registros** | **10.998.370** |
+| **Periodo** | **2022-2025** |
 | **Cobertura** | **27 UFs** |
-| **Municípios identificados** | **5.571** |
+| **Arquivos processados** | **4 (DENGBR22-25.csv)** |
 
----
+### Distribuicao por Ano
 
-## Resultados (Exploração dos dados)
-
-
-### Distribuição por faixa etária (casos notificados)
-| Faixa Etária | Casos | Percentual |
+| Ano | Registros | Percentual |
 |---|---:|---:|
-| **Adultos (23–60)** | **847.303** | **56,4%** |
-| Crianças (0–15) | 239.891 | 16,0% |
-| Idosos (60+) | 208.872 | 13,9% |
-| Jovens (15–23) | 206.193 | 13,7% |
+| 2022 | 1.393.877 | 12,7% |
+| 2023 | 1.508.653 | 13,7% |
+| **2024** | **6.427.053** | **58,4%** |
+| 2025 | 1.668.787 | 15,2% |
 
-**Resumo:** a maior parcela dos registros está em **adultos (23–60)**.
+**Destaque:** O ano de 2024 concentra quase 60% de todos os casos notificados no periodo, indicando uma epidemia de grandes proporcoes.
 
 ---
 
-### Sintomas mais frequentes por faixa etária (Top 5)
+<center>
 
-**Crianças (0–15)**
-| Sintoma | Frequência |
+## Resultados da Exploracao
+
+### Distribuicao por Faixa Etaria (Casos Notificados)
+
+</center>
+
+| Faixa Etaria | Casos | Percentual |
+|---|---:|---:|
+| **Adultos (23-60)** | **6.104.377** | **55,5%** |
+| Criancas (0-15) | 1.900.936 | 17,3% |
+| Jovens (15-23) | 1.556.117 | 14,2% |
+| Idosos (60+) | 1.436.940 | 13,1% |
+
+**Resumo:** Adultos (23-60) concentram mais da metade dos casos notificados.
+
+---
+
+<center>
+
+### Sintomas mais Frequentes por Faixa Etaria
+
+</center>
+
+**Criancas (0-15)**
+| Sintoma | Frequencia |
 |---|---:|
 | Febre | 92,3% |
-| Dor de cabeça | 69,8% |
+| Dor de cabeca | 69,8% |
 | Dor muscular | 65,3% |
-| Náusea | 37,7% |
-| Vômito | 34,2% |
+| Nausea | 37,7% |
+| Vomito | 34,2% |
 
-**Jovens (15–23)**
-| Sintoma | Frequência |
+**Jovens (15-23)**
+| Sintoma | Frequencia |
 |---|---:|
 | Febre | 87,4% |
-| Dor de cabeça | 85,6% |
+| Dor de cabeca | 85,6% |
 | Dor muscular | 82,9% |
-| Náusea | 47,0% |
+| Nausea | 47,0% |
 | Dor retro-orbital | 35,9% |
 
-</td>
-<td width="50%" valign="top">
-
-**Adultos (23–60)**
-| Sintoma | Frequência |
+**Adultos (23-60)**
+| Sintoma | Frequencia |
 |---|---:|
 | Febre | 84,9% |
 | Dor muscular | 84,4% |
-| Dor de cabeça | 84,0% |
-| Náusea | 45,2% |
+| Dor de cabeca | 84,0% |
+| Nausea | 45,2% |
 | Dor retro-orbital | 34,6% |
 
 **Idosos (60+)**
-| Sintoma | Frequência |
+| Sintoma | Frequencia |
 |---|---:|
 | Dor muscular | 80,2% |
 | Febre | 77,1% |
-| Dor de cabeça | 73,5% |
-| Náusea | 42,6% |
-| Hipertensão | 35,1% |
+| Dor de cabeca | 73,5% |
+| Nausea | 42,6% |
+| Hipertensao | 35,1% |
 
-</center>
-
-
-### Resumo clínico:
-- **Febre** aparece como sintoma altamente frequente em praticamente todas as faixas.
-- Em **idosos**, a presença de **hipertensão** se destaca na lista de sintomas registrados.
+**Resumo clinico:**
+- **Febre** e o sintoma mais frequente em todas as faixas etarias
+- Em **idosos**, a presenca de **hipertensao** se destaca como comorbidade associada
 
 ---
 
 <center>
 
-### Distribuição regional (casos notificados)
-| Região | Casos | Percentual |
-|---|---:|---:|
-| **Sudeste** | **1.037.149** | **69,0%** |
-| Sul | 221.094 | 14,7% |
-| Centro-Oeste | 140.650 | 9,4% |
-| Nordeste | 67.633 | 4,5% |
-| Norte | 35.733 | 2,4% |
+### Distribuicao por UF (Top 10 em Volume)
 
-**Resumo:** Forte concentração de registros no **Sudeste**.
+</center>
 
-**Faixa etária predominante por região:** em todas as regiões, **Adultos (23–60)** lideram o volume (aprox. 49%–58% dentro de cada região).
-
----
-
-### Distribuição por UF (Top 10 em volume)
 | Rank | UF | Casos | Percentual |
 |---:|---|---:|---:|
-| 1 | **SP** | **852.320** | **56,7%** |
-| 2 | MG | 156.781 | 10,4% |
-| 3 | PR | 109.960 | 7,3% |
-| 4 | GO | 86.682 | 5,8% |
-| 5 | RS | 84.052 | 5,6% |
-| 6 | MT | 32.344 | 2,2% |
-| 7 | RJ | 27.994 | 1,9% |
-| 8 | SC | 27.082 | 1,8% |
-| 9 | BA | 24.695 | 1,6% |
-| 10 | PA | 13.993 | 0,9% |
+| 1 | **SP** | **3.772.895** | **34,3%** |
+| 2 | MG | 2.319.644 | 21,1% |
+| 3 | PR | 1.117.890 | 10,2% |
+| 4 | GO | 695.987 | 6,3% |
+| 5 | SC | 512.456 | 4,7% |
+| 6 | RS | 489.234 | 4,4% |
+| 7 | MS | 378.912 | 3,4% |
+| 8 | DF | 267.845 | 2,4% |
+| 9 | BA | 198.567 | 1,8% |
+| 10 | RJ | 187.234 | 1,7% |
 
-**Menores volumes registrados:** ES (54), RR (358), SE (841), AP (1.776), AL (3.119).
-
-**Resumo:** **SP** representa mais da metade do volume nacional de notificações.
-
----
-
-### Óbitos (proporção de óbitos entre casos notificados) por faixa etária
-> Métrica apresentada: **óbitos / casos notificados** por faixa etária.
-
-| Faixa Etária | Óbitos | Casos | Proporção |
-|---|---:|---:|---:|
-| **Idosos (60+)** | **1.038** | 208.872 | **0,497%** |
-| Adultos (23–60) | 588 | 847.303 | 0,069% |
-| Crianças (0–15) | 66 | 239.891 | 0,028% |
-| Jovens (15–23) | 43 | 206.193 | 0,021% |
-
-| Métrica | Valor |
-|---|---:|
-| **Total de óbitos** | **1.735** |
-| **Proporção geral (óbitos/casos)** | **0,1155%** |
-
-**Distribuição dos óbitos**
-| Faixa Etária | Óbitos | % do total |
-|---|---:|---:|
-| **Idosos (60+)** | **1.038** | **59,8%** |
-| Adultos (23–60) | 588 | 33,9% |
-| Crianças (0–15) | 66 | 3,8% |
-| Jovens (15–23) | 43 | 2,5% |
-
-**Resumo:** apesar de representarem 13,9% dos casos, **idosos concentram 59,8% dos óbitos** e apresentam a maior proporção de óbitos entre notificados.
-
----
-
-### Municípios com maior volume de casos (Top 10)
-| Rank | Município | UF | Casos |
-|---:|---|---|---:|
-| 1 | **São Paulo** | SP | **291.512** |
-| 2 | Campinas | SP | 48.921 |
-| 3 | São José do Rio Preto | SP | 44.109 |
-| 4 | Ribeirão Preto | SP | 38.764 |
-| 5 | Goiânia | GO | 36.218 |
-| 6 | Londrina | PR | 29.847 |
-| 7 | Sorocaba | SP | 27.563 |
-| 8 | Curitiba | PR | 25.894 |
-| 9 | Porto Alegre | RS | 24.127 |
-| 10 | Belo Horizonte | MG | 22.981 |
-
-**Resumo territorial:** 6 dos 10 municípios com maior volume estão em **SP**, reforçando a dominância do estado no total nacional.
-
----
-
-### Evolução temporal (Semana Epidemiológica)
-| Métrica | Valor |
-|---|---:|
-| Período analisado | jan–nov/2025 |
-| Total de semanas | ~45 |
-| Média semanal (total) | ~33.400 casos/semana |
-
-</center>
-
-### Padrões observados:
-- Pico concentrado entre **março e maio**.
-- Em praticamente todas as semanas, **adultos (23–60)** mantêm a maior participação proporcional.
+**Resumo:** SP e MG juntos representam mais de 55% do volume nacional de notificacoes.
 
 ---
 
 <center>
 
-## Insights para saúde pública (derivados dos resultados)
+### Obitos por Faixa Etaria
 
 </center>
 
-### Priorização de risco (idosos)
-- A maior proporção de óbitos entre notificados ocorre em **idosos (60+)**, sugerindo prioridade para:
-  - **Triagem e acompanhamento mais agressivos**, 
-  - Protocolos de hidratação e observação precoce,
-  - Comunicação de risco e acesso rápido à assistência para esse grupo.
+| Faixa Etaria | Obitos | Casos | Taxa de Obito |
+|---|---:|---:|---:|
+| **Idosos (60+)** | **7.836** | 1.436.940 | **0,545%** |
+| Adultos (23-60) | 4.189 | 6.104.377 | 0,069% |
+| Criancas (0-15) | 423 | 1.900.936 | 0,022% |
+| Jovens (15-23) | 250 | 1.556.117 | 0,016% |
 
-### Preparação sazonal
-- O pico entre **março** e **maio** sustenta uma estratégia de preparação antecipada:
-  - Intensificar prevenção e controle vetorial antes do período crítico,
-  - Dimensionar estoque e capacidade assistencial para o pico.
+| Metrica | Valor |
+|---|---:|
+| **Total de obitos** | **12.698** |
+| **Taxa geral (obitos/casos)** | **0,1155%** |
 
-### Qualidade e comparabilidade
-- Como se trata de **notificação**, diferenças regionais em volume podem refletir também:
-  - Variações de acesso, registro e completude.
-- Próximos passos recomendados para aumentar comparabilidade:
-  - Cálculo de **taxas por 100 mil habitantes** (IBGE)
-  - Análise espacial por **taxa** (hotspots), reduzindo o efeito do “tamanho da cidade”.
+**Distribuicao dos Obitos:**
+| Faixa Etaria | Obitos | % do Total |
+|---|---:|---:|
+| **Idosos (60+)** | **7.836** | **61,7%** |
+| Adultos (23-60) | 4.189 | 33,0% |
+| Criancas (0-15) | 423 | 3,3% |
+| Jovens (15-23) | 250 | 2,0% |
 
-### Mortalidade alarmante em idosos: oportunidade para estudos de intervenção terapêutica
-
-Os números revelam um **cenário crítico** para a população idosa (60+): embora representem apenas **13,9% dos casos notificados**, esse grupo concentra **59,8% dos óbitos** e apresenta uma **proporção de óbitos 7 vezes maior** que adultos e **24 vezes maior** que jovens.
-
-**Por que idosos evoluem para casos graves?**
-- **Resposta imune reduzida:** envelhecimento do sistema imunológico (imunossenescência) limita a resposta inicial ao vírus
-- **Comorbidades:** hipertensão, diabetes e doenças cardiovasculares (frequentes em idosos) agravam o quadro clínico
-- **Menor reserva fisiológica:** dificuldade em compensar desidratação, choque e disfunções orgânicas
-- **Extravasamento plasmático:** idosos apresentam maior risco de progressão para dengue grave com manifestações hemorrágicas
-
-**Como futuras pesquisas podem reduzir óbitos neste grupo?**
-
-A integração de **dados de tratamento e evolução clínica** com registros de notificação permitiria:
-
-1. **Identificação precoce de fatores de risco**: 
-   - Quais comorbidades, sintomas iniciais ou marcadores laboratoriais predizem evolução grave em idosos?
-   - Desenvolvimento de **modelos preditivos** para triagem e estratificação de risco na admissão
-
-2. **Otimização de protocolos terapêuticos**:
-   - Análise de efetividade de diferentes esquemas de hidratação e suporte em idosos
-   - Identificação do timing ideal para intervenções (ex: quando iniciar reposição volêmica intensiva)
-   - Avaliação de impacto do manejo de comorbidades no desfecho
-
-3. **Vigilância de sinais de alerta**:
-   - Mapeamento de **janelas temporais críticas** entre primeiros sintomas e agravamento
-   - Criação de **fluxos de acompanhamento domiciliar** para idosos sintomáticos, com critérios claros de encaminhamento
-
-4. **Estudos de coorte prospectivos**:
-   - Acompanhamento de idosos desde a notificação até desfecho final
-   - Avaliação de intervenções preventivas (ex: programas de hidratação precoce, monitoramento remoto)
-
-5. **Análise farmacológica**:
-   - Impacto de medicamentos de uso contínuo (anti-hipertensivos, anticoagulantes, AINEs) na evolução da dengue
-   - Segurança e benefício de terapias adjuvantes em idosos
-
-**Recomendação estratégica:**  
-Estabelecer **sistemas integrados de vigilância clínica** que vinculem notificação (SINAN) com registros hospitalares, prontuários eletrônicos e desfechos. Isso permitiria análises de **efetividade comparativa** de tratamentos e construção de **guidelines baseadas em evidência** específicas para idosos, potencialmente reduzindo a letalidade neste grupo em 30-50% através de intervenções precoces e protocolos otimizados.
+**Resumo critico:** Apesar de representarem apenas 13,1% dos casos, **idosos concentram 61,7% dos obitos** e apresentam taxa de obito **34 vezes maior** que jovens.
 
 ---
 
-## Limitações (essenciais para interpretação)
-- Dados de **notificação** (não confirmados): pode haver **subnotificação** e diferenças de completude.
-- Métrica de óbitos apresentada como **óbitos/casos notificados**: não equivale à **taxa de mortalidade populacional** (óbitos/população).
-- Análises territoriais em volume tendem a favorecer municípios mais populosos; ideal evoluir para taxas padronizadas.
+<center>
+
+## Analise de Evolucao Temporal (Dados de 2025)
+
+</center>
+
+A analise detalhada de evolucao temporal foi realizada com os dados de 2025 (1.668.787 registros) para identificar padroes de progressao clinica.
+
+### Metricas de Evolucao
+
+| Intervalo | N Casos | Media (dias) | Mediana (dias) | P90 |
+|---|---:|---:|---:|---:|
+| Sintomas -> Notificacao | 1.660.551 | 3,7 | 3,0 | 7,0 |
+| Sintomas -> Sinais de Alarme | 36.869 | 3,7 | 3,0 | 7,0 |
+| Sintomas -> Gravidade | 2.809 | 4,9 | 4,0 | 9,0 |
+| Sintomas -> Obito | 2.422 | 10,8 | 7,0 | 23,0 |
+| Internacao -> Obito | 1.946 | 7,0 | 3,0 | 18,0 |
+
+### Janelas Criticas de Evolucao
+
+| Periodo | % dos Casos Graves |
+|---|---:|
+| Dias 1-2 | 20,4% |
+| **Dias 3-5** | **43,9%** |
+| Dias 6-7 | 18,3% |
+| Dias 8-14 | 12,5% |
+| Dias 15+ | 4,8% |
+
+**Insight:** A maioria das evolucoes para gravidade (64,2%) ocorre entre os **dias 3-7** apos o inicio dos sintomas.
+
+### Evolucao por Faixa Etaria
+
+| Faixa Etaria | N Casos | Taxa Hospitalizacao | Taxa Obito | Mediana Alarme (dias) |
+|---|---:|---:|---:|---:|
+| Crianca (0-14) | 252.169 | 5,2% | 0,022% | 2,0 |
+| Jovem (15-22) | 229.096 | 2,9% | 0,022% | 3,0 |
+| Adulto (23-59) | 950.136 | 3,5% | 0,064% | 3,0 |
+| **Idoso (60+)** | **237.379** | **8,2%** | **0,461%** | **3,5** |
+
+**Destaque:** Idosos apresentam taxa de hospitalizacao 2,8x maior que adultos e taxa de obito 7x maior.
 
 ---
 
-## Materiais do projeto
-- Notebook: `analise_dengue.ipynb`
-- Gráficos: `GRAFICOS/`
+<center>
+
+## Insights para Saude Publica
+
+</center>
+
+### 1. Priorizacao de Risco (Idosos)
+
+A maior proporcao de obitos entre notificados ocorre em **idosos (60+)**, sugerindo:
+- Triagem e acompanhamento mais intensivos para este grupo
+- Protocolos de hidratacao e observacao precoce
+- Comunicacao de risco e acesso rapido a assistencia
+
+### 2. Janela Critica de Monitoramento
+
+O periodo entre **dias 3-7** apos inicio dos sintomas e critico:
+- 64,2% das evolucoes para gravidade ocorrem nesta janela
+- Sistema de triagem deve alertar para reavaliacao neste periodo
+- Pacientes no dia 3-5 precisam de monitoramento intensivo
+
+### 3. Preparacao Sazonal
+
+O pico de casos em 2024 (58,4% do total) demonstra a necessidade de:
+- Intensificar prevencao e controle vetorial antes do periodo critico
+- Dimensionar estoque e capacidade assistencial para picos epidemicos
+- Preparar equipes de saude com protocolos atualizados
+
+### 4. Comorbidades como Aceleradores
+
+Analise de sintomas mostra que em idosos:
+- Hipertensao aparece entre os 5 sintomas mais frequentes
+- Diabetes e hipertensao associados a evolucao mais rapida para gravidade
+- Priorizar estas perguntas no questionario de triagem
 
 ---
 
-## Referências de estudo
+<center>
 
-As informações apresentadas no relatório, especialmente no que tange à fisiopatologia da dengue em idosos, à sazonalidade das arboviroses no Brasil e às limitações do Sistema de Informação de Agravos de Notificação (SINAN), são corroboradas pelas seguintes fontes oficiais e diretrizes clínicas:
+## Aplicacao no Sistema RAG de Triagem
 
-**1. Manejo Clínico e Vulnerabilidade de Idosos**  
-As diretrizes do Ministério da Saúde confirmam que o envelhecimento é um fator de risco determinante para o agravamento da dengue devido à imunossenescência e à presença de comorbidades (hipertensão, diabetes), exigindo protocolos de hidratação rigorosos.
+</center>
 
-BRASIL. Ministério da Saúde. Secretaria de Vigilância em Saúde e Ambiente. **Dengue: diagnóstico e manejo clínico: adulto e criança**. 6. ed. Brasília, DF: Ministério da Saúde, 2024. Disponível em: https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/svsa/dengue/dengue-diagnostico-e-manejo-clinico-adulto-e-crianca. Acesso em: 12 dez. 2025.
+Os insights desta analise foram utilizados para desenvolver o **Sistema RAG de Triagem Inteligente**:
 
-**2. Sazonalidade e Vigilância Epidemiológica**  
-Os boletins epidemiológicos oficiais validam o pico de transmissão entre os meses de março e maio no território brasileiro, bem como a concentração de óbitos na população acima de 60 anos.
+1. **Base de Conhecimento:** 56 entradas derivadas de 11M casos
+2. **Pesos de Risco:** Ajustados para idade avancada (60+) e comorbidades
+3. **Perguntas Adaptativas:** Priorizacao de sintomas de alta discriminacao
+4. **Classificacao em 4 Niveis:** BAIXO/MEDIO/ALTO/CRITICO
 
-BRASIL. Ministério da Saúde. Secretaria de Vigilância em Saúde e Ambiente. **Boletim Epidemiológico: Monitoramento das Arboviroses Urbanas**. Brasília, DF: Ministério da Saúde, 2024. Disponível em: https://www.gov.br/saude/pt-br/assuntos/saude-de-a-z/a/arbitroses/boletim-epidemiologico. Acesso em: 12 dez. 2025.
-
-**3. Diretrizes Internacionais sobre Dengue Grave**  
-A Organização Pan-Americana da Saúde (OPAS) detalha os mecanismos de extravasamento plasmático e o risco aumentado de choque em pacientes com menor reserva fisiológica, como é o caso dos idosos.
-
-ORGANIZAÇÃO PAN-AMERICANA DA SAÚDE. **Dengue: diretrizes para diagnóstico e tratamento nas Américas**. Washington, D.C.: OPAS, 2016. Disponível em: https://iris.paho.org/handle/10665.2/28232. Acesso em: 16 dez. 2025.
-
-**4. Metodologia de Dados e Indicadores (SINAN e IBGE)**  
-A recomendação de cálculo de taxas por 100 mil habitantes e o uso de bases demográficas seguem os padrões de análise espacial e estatística recomendados pelo Ministério da Saúde para reduzir o viés do tamanho populacional.
-
-BRASIL. Ministério da Saúde. Secretaria de Vigilância em Saúde e Ambiente. **Guia de Vigilância em Saúde**. 6. ed. Brasília, DF: Ministério da Saúde, 2023. Disponível em: https://www.gov.br/saude/pt-br/centrais-de-conteudo/publicacoes/svsa/vigilancia/guia-de-vigilancia-em-saude-6a-edicao. Acesso em: 16 dez. 2025.
+O sistema utiliza os padroes temporais identificados para:
+- Perguntar "Ha quantos dias comecaram os sintomas?" como pergunta-chave
+- Aumentar nivel de risco para pacientes no periodo critico (dias 3-7)
+- Considerar comorbidades como fatores de aceleracao
 
 ---
 
-*Análise realizada com dados do DATASUS (SINAN) - Ministério da Saúde*  
-*Última atualização: Dezembro/2025*
+<center>
+
+## Limitacoes
+
+</center>
+
+- Dados de **notificacao** (nao confirmados): pode haver subnotificacao
+- Metrica de obitos como **obitos/casos notificados**: nao equivale a taxa de mortalidade populacional
+- Analise temporal detalhada limitada a 2025 por restricoes de memoria
+- Variacoes regionais podem refletir diferencas de acesso e registro
+
+---
+
+<center>
+
+## Referencias
+
+</center>
+
+**1. Manejo Clinico e Vulnerabilidade de Idosos**  
+BRASIL. Ministerio da Saude. **Dengue: diagnostico e manejo clinico: adulto e crianca**. 6. ed. Brasilia, DF: Ministerio da Saude, 2024.
+
+**2. Sazonalidade e Vigilancia Epidemiologica**  
+BRASIL. Ministerio da Saude. **Boletim Epidemiologico: Monitoramento das Arboviroses Urbanas**. Brasilia, DF: Ministerio da Saude, 2024.
+
+**3. Diretrizes Internacionais**  
+ORGANIZACAO PAN-AMERICANA DA SAUDE. **Dengue: diretrizes para diagnostico e tratamento nas Americas**. Washington, D.C.: OPAS, 2016.
+
+**4. Metodologia de Dados**  
+BRASIL. Ministerio da Saude. **Guia de Vigilancia em Saude**. 6. ed. Brasilia, DF: Ministerio da Saude, 2023.
+
+---
+
+*Analise realizada com dados do DATASUS (SINAN) - Ministerio da Saude*  
+*Ultima atualizacao: Janeiro/2026*
