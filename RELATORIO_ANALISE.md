@@ -53,7 +53,76 @@ A metrica de mortalidade utilizada e a **proporcao de obitos entre casos notific
 
 <center>
 
-## Resultados da Exploracao
+## ANALISE NORMALIZADA (Principal)
+
+</center>
+
+A normalizacao por 10.000 casos permite comparacoes justas entre grupos de tamanhos diferentes, eliminando o vies do volume absoluto. Esta secao apresenta as **metricas-chave normalizadas**.
+
+### Taxa de Obitos por 10.000 Casos Notificados
+
+| Faixa Etaria | Casos | Obitos | Taxa (%) | Por 10.000 |
+|---|---:|---:|---:|---:|
+| Criancas (0-15) | 1.898.084 | 432 | 0,023% | **2,3** |
+| Jovens (15-23) | 1.556.891 | 334 | 0,021% | **2,1** |
+| Adultos (23-60) | 6.100.176 | 3.224 | 0,053% | **5,3** |
+| **Idosos (60+)** | **1.443.219** | **6.221** | **0,431%** | **43,1** |
+| **TOTAL** | **10.998.370** | **10.211** | **0,093%** | **9,3** |
+
+### Razao de Risco Relativo (Referencia: Jovens)
+
+| Faixa Etaria | Razao de Risco |
+|---|---:|
+| Criancas (0-15) | 1,1x |
+| Jovens (15-23) | 1,0x (referencia) |
+| Adultos (23-60) | 2,5x |
+| **Idosos (60+)** | **20,1x** |
+
+**Insight critico:** Idosos (60+) tem risco de obito **20 vezes maior** que jovens quando normalizamos por numero de casos.
+
+### Taxa de Obitos por Regiao (Por 10.000 Casos)
+
+| Regiao | Casos | Obitos | Por 10.000 |
+|---|---:|---:|---:|
+| Norte | 181.604 | 162 | 8,9 |
+| Nordeste | 795.264 | 567 | 7,1 |
+| **Centro-Oeste** | **1.365.565** | **1.466** | **10,7** |
+| Sudeste | 6.523.802 | 5.887 | 9,0 |
+| Sul | 2.132.135 | 2.129 | 10,0 |
+
+**Insight:** Centro-Oeste apresenta a maior taxa de obitos por 10.000 casos (10,7), seguido pelo Sul (10,0).
+
+### Matriz de Risco: Regiao x Faixa Etaria (Obitos por 10.000)
+
+| Regiao | Criancas | Jovens | Adultos | Idosos |
+|---|---:|---:|---:|---:|
+| Norte | 4,4 | 6,0 | 7,9 | 35,3 |
+| Nordeste | 4,9 | 3,9 | 6,2 | 27,4 |
+| **Centro-Oeste** | 3,9 | 2,4 | 7,0 | **52,6** |
+| Sudeste | 1,5 | 1,9 | 5,1 | 40,9 |
+| Sul | 1,5 | 1,4 | 4,3 | 48,3 |
+
+**Insight critico:** Idosos no Centro-Oeste apresentam a maior taxa normalizada (52,6 obitos por 10.000 casos), seguidos pelo Sul (48,3) e Sudeste (40,9).
+
+### Frequencia de Sintomas por 10.000 Casos (Top 5)
+
+| Sintoma | Criancas | Jovens | Adultos | Idosos |
+|---|---:|---:|---:|---:|
+| Febre | 9.178 | 8.774 | 8.470 | 7.693 |
+| Dor muscular | 6.585 | 8.229 | 8.339 | 7.912 |
+| Dor de cabeca | 7.034 | 8.512 | 8.290 | 7.271 |
+| Nausea | 3.647 | 4.505 | 4.409 | 4.228 |
+| Dor retro-orbital | 2.251 | 3.694 | 3.487 | 2.393 |
+
+**Destaque em Idosos:**
+- Hipertensao: 3.369 por 10.000 (vs 61 em criancas)
+- Diabetes: 1.545 por 10.000 (vs 54 em criancas)
+
+---
+
+<center>
+
+## Resultados em Valores Absolutos
 
 ### Distribuicao por Faixa Etaria (Casos Notificados)
 
@@ -61,10 +130,10 @@ A metrica de mortalidade utilizada e a **proporcao de obitos entre casos notific
 
 | Faixa Etaria | Casos | Percentual |
 |---|---:|---:|
-| **Adultos (23-60)** | **6.104.377** | **55,5%** |
-| Criancas (0-15) | 1.900.936 | 17,3% |
-| Jovens (15-23) | 1.556.117 | 14,2% |
-| Idosos (60+) | 1.436.940 | 13,1% |
+| **Adultos (23-60)** | **6.100.176** | **55,5%** |
+| Criancas (0-15) | 1.898.084 | 17,3% |
+| Jovens (15-23) | 1.556.891 | 14,2% |
+| Idosos (60+) | 1.443.219 | 13,1% |
 
 **Resumo:** Adultos (23-60) concentram mais da metade dos casos notificados.
 
